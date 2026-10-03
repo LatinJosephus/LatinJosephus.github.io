@@ -38,10 +38,11 @@
   href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons">
 
 <!-- Styles -->
-
-<link rel="icon"
-  href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
-
+<!-- Bamberg identity: LI icon, simplified for browser tabs. -->
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/brand/bamberg/bamberg-favicon-light-32.png">
+<link rel="icon" type="image/svg+xml" href="/assets/img/brand/bamberg/bamberg-micro-icon-light.svg">
+<link rel="icon" type="image/svg+xml" media="(prefers-color-scheme: dark)" href="/assets/img/brand/bamberg/bamberg-micro-icon-dark.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/img/brand/bamberg/bamberg-favicon-light-180.png">
 <link rel="stylesheet" href="/assets/css/main.css">
 <link rel="canonical" href="/about/">
 
@@ -56,11 +57,9 @@
     <header>
 
     <!-- Nav Bar -->
-    <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top">
+    <nav id="navbar" class="navbar navbar-light navbar-expand-md fixed-top lj-navbar">
     <div class="container">
-      <a class="navbar-brand title font-weight-lighter" href="/">
-       <span class="font-weight-bold">Latin</span>Josephus
-      </a>
+      <a class="navbar-brand lj-brand" href="/" aria-label="Latin Josephus home"><img class="lj-brand__light" src="/assets/img/brand/bamberg/bamberg-logo-header-light.svg" width="624" height="170" alt="" aria-hidden="true"><img class="lj-brand__dark" src="/assets/img/brand/bamberg/bamberg-logo-header-dark.svg" width="624" height="170" alt="" aria-hidden="true"></a>
 
       <!-- Navbar Toggle -->
       <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -314,6 +313,7 @@
   
 <!-- CETEIcean and TEI display JS -->
 <script src="/assets/js/CETEI.js"></script>
+
 <script src="/assets/js/renderTei.js"></script>
 
 

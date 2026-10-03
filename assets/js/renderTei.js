@@ -104,12 +104,13 @@ document.addEventListener("DOMContentLoaded", () => {
       // record those boundaries without splitting or renumbering the stable
       // paragraph IDs.
       milestoneChapterBooks: [15, 16, 17, 18, 19, 20],
-      nieseBooks: [1, 2, 3, 4],
+      nieseBooks: [1, 2, 3, 4, 5],
       nieseRanges: {
         1: [27, 346],
         2: [1, 349],
         3: [1, 322],
-        4: [1, 331]
+        4: [1, 331],
+        5: [1, 362]
       }
     },
     "/bellum-judaicum/": {
@@ -759,7 +760,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (visibleLabel) return visibleLabel;
     }
 
-    const label = activeWork.slug === "bellum" ? "Sub-chapter" : "Section";
+    const label = ["antiquities", "bellum"].includes(activeWork.slug)
+      ? "Sub-chapter"
+      : "Section";
     return `${label} ${sectionNum}`;
   };
 
@@ -2435,7 +2438,7 @@ document.addEventListener("DOMContentLoaded", () => {
       state.nieseNum
       && state.viewingLevel === "niese-level"
     )
-      ? `Section ${parseInt(state.nieseNum, 10)}`
+      ? `Niese section ${parseInt(state.nieseNum, 10)}`
       : (
         state.sectionNum
         && state.viewingLevel === "section-level"
@@ -2451,6 +2454,17 @@ document.addEventListener("DOMContentLoaded", () => {
     updateNavigationForms();
     addContraApionemTransmissionNotice();
     syncNavigationControls();
+    // Optional scholarly parallels live outside the textual alignment layer.
+    if (activeWork.slug === "deh") {
+      document.dispatchEvent(new CustomEvent("deh-view-rendered", {
+        detail: {
+          book: parseInt(state.bookNum, 10),
+          chapter: state.chapterNum,
+          num: state.sectionNum,
+          level: state.viewingLevel
+        }
+      }));
+    }
   };
 
   const displayedLatinTarget = (paragraphId) => {
