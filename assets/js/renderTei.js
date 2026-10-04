@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const chapterSelectMenu = document.getElementById("chapter-selector");
   const englishPane = document.getElementById("english");
   const englishPaneCheckbox = document.getElementById("english-pane-select");
+  const lodgeNotesRow = document.getElementById("lodge-notes-select");
+  const lodgeNotesCheckbox = document.getElementById("lodge-notes-visible");
   const frenchPane = document.getElementById("french");
   const frenchPaneCheckbox = document.getElementById("french-pane-select");
   const greekPane = document.getElementById("greek");
@@ -104,13 +106,14 @@ document.addEventListener("DOMContentLoaded", () => {
       // record those boundaries without splitting or renumbering the stable
       // paragraph IDs.
       milestoneChapterBooks: [15, 16, 17, 18, 19, 20],
-      nieseBooks: [1, 2, 3, 4, 5],
+      nieseBooks: [1, 2, 3, 4, 5, 6],
       nieseRanges: {
         1: [27, 346],
         2: [1, 349],
         3: [1, 322],
         4: [1, 331],
-        5: [1, 362]
+        5: [1, 362],
+        6: [1, 378]
       }
     },
     "/bellum-judaicum/": {
@@ -139,6 +142,10 @@ document.addEventListener("DOMContentLoaded", () => {
             whiston: {
               label: "Whiston",
               directory: "English"
+            },
+            lodge1602: {
+              label: "Lodge (1602)",
+              directory: "English/Lodge1602"
             }
           }
         },
@@ -279,6 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
     sectionNum: null,
     nieseNum: null,
     viewingLevel: 'book-level',
+    lodgeNotesVisible: true,
     sources: initialSources
   };
 
@@ -369,6 +377,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "unit",
       "num",
       "niese",
+      ...(activeWork.slug === "bellum" ? ["lodgeNotes"] : []),
       ...sourceParamKeys
     ].some(key => params.has(key));
 
@@ -459,6 +468,7 @@ document.addEventListener("DOMContentLoaded", () => {
       explicitNum,
       nieseNum,
       sourceSelections,
+      lodgeNotesVisible: activeWork.slug !== "bellum" || params.get("lodgeNotes") !== "0",
       hasLocationParams
     };
   };
@@ -472,6 +482,7 @@ document.addEventListener("DOMContentLoaded", () => {
     state.nieseNum = null;
 
     state.sources = { ...initialSources };
+    state.lodgeNotesVisible = location.lodgeNotesVisible;
 
     Object.entries(location.sourceSelections || {}).forEach(
       ([language, sourceKey]) => {
@@ -602,13 +613,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Canonicalize parameter order for readable, stable scholarly URLs:
-    // book -> chapter -> unit -> niese -> source selections.
+    // book -> chapter -> unit -> niese -> source selections -> Lodge notes.
     const knownParams = new Set([
       "book",
       "chapter",
       "unit",
       "num",
       "niese",
+      ...(activeWork.slug === "bellum" ? ["lodgeNotes"] : []),
       ...Object.keys(activeWork.languages).map(
         language => language.toLowerCase()
       )
@@ -683,6 +695,10 @@ document.addEventListener("DOMContentLoaded", () => {
         );
       }
     });
+
+    if (activeWork.slug === "bellum" && !state.lodgeNotesVisible) {
+      orderedParams.set("lodgeNotes", "0");
+    }
 
     extras.forEach(([key, value]) => {
       orderedParams.append(key, value);
@@ -1535,12 +1551,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     wrapper.querySelectorAll("tei-p").forEach(paragraph => {
+      const lodgeOmission = activeWork.slug === "bellum"
+        && state.sources.English === "lodge1602"
+        && paragraph.querySelector('tei-gap[reason="omitted"][unit="niese-section"]');
+      if (lodgeOmission) return;
       if (!paragraph.textContent.trim() && !paragraph.querySelector("tei-milestone, tei-num")) paragraph.remove();
     });
 
     const firstParagraph = wrapper.querySelector("tei-p");
     if (firstParagraph) {
-      firstParagraph.insertBefore(makeGeneratedNieseLabel(wanted), firstParagraph.firstChild);
+      let labelContainer = firstParagraph;
+      if (activeWork.slug === "bellum" && state.sources.English === "lodge1602") {
+        const textWalker = document.createTreeWalker(firstParagraph, NodeFilter.SHOW_TEXT, {
+          acceptNode: node => node.data.trim() && !node.parentElement.closest("tei-note, [data-original]")
+            ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP
+        });
+        const firstText = textWalker.nextNode();
+        // Keep the citation with the opening TCP block, including through inline wrappers.
+        const firstBlock = firstText?.parentElement.closest(`tei-seg:is(
+          [type="tcp-p"], [type="tcp-head"], [type="tcp-byline"],
+          [type="tcp-argument"], [type="tcp-list"], [type="tcp-item"], [type="tcp-trailer"]
+        )`);
+        if (firstBlock && firstParagraph.contains(firstBlock)) labelContainer = firstBlock;
+      }
+      labelContainer.insertBefore(makeGeneratedNieseLabel(wanted), labelContainer.firstChild);
     }
     return wrapper;
   };
@@ -2076,6 +2110,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const updateLodgeNotesUI = () => {
+    const isLodge = activeWork.slug === "bellum"
+      && state.sources.English === "lodge1602";
+
+    if (lodgeNotesRow) {
+      lodgeNotesRow.hidden = !isLodge;
+      lodgeNotesRow.classList.toggle("hidden", !isLodge);
+    }
+    if (lodgeNotesCheckbox) lodgeNotesCheckbox.checked = state.lodgeNotesVisible;
+    englishPane?.classList.toggle("lodge-notes-hidden", isLodge && !state.lodgeNotesVisible);
+  };
+
   const updateLanguageUI = () => {
     Object.entries(languagePanes).forEach(([language, pane]) => {
       if (!pane) return;
@@ -2153,6 +2199,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     });
+    updateLodgeNotesUI();
   };
 
   const updateNavigationForms = () => {
@@ -2906,6 +2953,13 @@ document.addEventListener("DOMContentLoaded", () => {
           state.sources[language] = sourceKey;
         });
       });
+    });
+
+    lodgeNotesCheckbox?.addEventListener("change", () => {
+      if (activeWork.slug !== "bellum" || state.sources.English !== "lodge1602") return;
+      state.lodgeNotesVisible = lodgeNotesCheckbox.checked;
+      updateLodgeNotesUI();
+      syncUrlFromState("push");
     });
 
     highlightCheckbox.addEventListener("change", () => {

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LatinJosephus — Antiquities VI Niese Browser Regression QA</title>
+<style>
+:root{color-scheme:light dark;--line:color-mix(in srgb,CanvasText 18%,transparent);--pass:#16803a;--fail:#b42318}
+body{margin:0;font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;background:Canvas;color:CanvasText}
+main{max-width:1500px;margin:auto;padding:24px} h1{margin-bottom:4px} .muted{color:GrayText}
+.controls{display:grid;grid-template-columns:minmax(360px,1fr) auto auto auto;gap:10px;align-items:end;margin:18px 0}
+input[type=url],input[type=text]{width:100%;box-sizing:border-box;padding:8px;border:1px solid var(--line);border-radius:6px;background:Canvas;color:CanvasText}
+button,.open{display:inline-block;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:Canvas;color:LinkText;text-decoration:none;cursor:pointer}
+.summary{display:flex;gap:16px;flex-wrap:wrap;margin:12px 0 18px;font-weight:600}
+table{border-collapse:collapse;width:100%} th,td{border-top:1px solid var(--line);padding:9px 8px;vertical-align:top;text-align:left}
+th{position:sticky;top:0;background:Canvas;z-index:1} td:nth-child(1){width:85px} td:nth-child(2){white-space:nowrap} td:nth-child(3){width:210px} td:nth-child(4){width:90px} td:nth-child(5){min-width:430px} td:nth-child(6){min-width:250px}
+tr[data-result="PASS"]{box-shadow:inset 4px 0 var(--pass)} tr[data-result="FAIL"]{box-shadow:inset 4px 0 var(--fail)}
+.group td{font-weight:700;border-top:2px solid var(--line);padding-top:18px}
+.box{padding:12px 14px;border:1px solid var(--line);border-radius:8px;margin:16px 0}
+</style>
+</head>
+<body><main>
+<h1>LatinJosephus — Antiquities VI Niese Browser Regression QA</h1>
+<div class="muted">Local browser certification for the Book VI renderer/navigation change. Results and notes persist in this browser.</div>
+<div class="box"><strong>Routine:</strong> open each citation; verify the expected boundary; switch Greek ↔ Latin and confirm the Niese number persists; check Previous/Next where specified; mark PASS/FAIL here.</div>
+
+<div class="controls">
+<div><label for="base"><strong>Antiquities base URL</strong></label><input id="base" type="url" value="http://localhost:4000/antiquities/"></div>
+<button id="save">Save now</button><button id="export">Export JSON</button><button id="reset">Reset</button>
+</div>
+
+<div class="summary"><span id="total"></span><span id="pass"></span><span id="fail"></span><span id="skip"></span><span id="open"></span></div>
+
+<table>
+<thead><tr><th>Result</th><th>Niese</th><th>Purpose</th><th>Link</th><th>Expected behavior</th><th>Notes</th></tr></thead>
+<tbody>
+<tr class="group"><td colspan="6">Book VI certification</td></tr>
+<tr data-result="">
+<td><select id="status-1"><option value="">—</option><option>PASS</option><option>FAIL</option><option>SKIP</option></select></td>
+<td><strong>6.1</strong></td>
+<td>Opening-marker case</td>
+<td><a class="open" href="#" data-path="?book=6&amp;niese=1">Open test</a></td>
+<td>Loads VI.1; Greek begins Λαβόντες δ᾽ οἱ Παλαιστῖνοι…; Greek↔Latin switching preserves 6.1; Previous is unavailable/disabled; Next goes to 6.2.</td>
+<td><input id="notes-1" type="text" placeholder="Notes / failure details"></td>
+</tr>
+<tr data-result="">
+<td><select id="status-2"><option value="">—</option><option>PASS</option><option>FAIL</option><option>SKIP</option></select></td>
+<td><strong>6.33</strong></td>
+<td>Human-adjudicated boundary</td>
+<td><a class="open" href="#" data-path="?book=6&amp;niese=33">Open test</a></td>
+<td>Latin VI.33 begins at “de parentibus suis existerent”; Greek↔Latin switching preserves 6.33; Previous/Next reach 6.32/6.34.</td>
+<td><input id="notes-2" type="text" placeholder="Notes / failure details"></td>
+</tr>
+<tr data-result="">
+<td><select id="status-3"><option value="">—</option><option>PASS</option><option>FAIL</option><option>SKIP</option></select></td>
+<td><strong>6.111</strong></td>
+<td>Human boundary + nearby Greek encoding literal</td>
+<td><a class="open" href="#" data-path="?book=6&amp;niese=111">Open test</a></td>
+<td>Latin VI.111 begins “Si uero nihil eloquerentur”; section renders without navigation/parser failure; Greek↔Latin switching preserves 6.111.</td>
+<td><input id="notes-3" type="text" placeholder="Notes / failure details"></td>
+</tr>
+<tr data-result="">
+<td><select id="status-4"><option value="">—</option><option>PASS</option><option>FAIL</option><option>SKIP</option></select></td>
+<td><strong>6.249</strong></td>
+<td>Corrected Greek marker; inherited Latin label</td>
+<td><a class="open" href="#" data-path="?book=6&amp;niese=249">Open test</a></td>
+<td>Greek VI.249 begins αὐτὸς τοῦ προφήτου κελεύσαντος…; Latin 249 is inherited from [XII.iv.249] and no duplicate 249 appears; switching preserves 6.249.</td>
+<td><input id="notes-4" type="text" placeholder="Notes / failure details"></td>
+</tr>
+<tr data-result="">
+<td><select id="status-5"><option value="">—</option><option>PASS</option><option>FAIL</option><option>SKIP</option></select></td>
+<td><strong>6.269</strong></td>
+<td>True milestone after composite-label correction</td>
+<td><a class="open" href="#" data-path="?book=6&amp;niese=269">Open test</a></td>
+<td>Latin VI.269 begins “Abiathar itaque abimelech filius…”; exactly one active 269; Previous/Next reach 268/270.</td>
+<td><input id="notes-5" type="text" placeholder="Notes / failure details"></td>
+</tr>
+<tr data-result="">
+<td><select id="status-6"><option value="">—</option><option>PASS</option><option>FAIL</option><option>SKIP</option></select></td>
+<td><strong>6.271</strong></td>
+<td>Milestone + medieval-label separation</td>
+<td><a class="open" href="#" data-path="?book=6&amp;niese=271">Open test</a></td>
+<td>Latin VI.271 begins “Eo siquidem tempore audiens dauid…”; [XII.viii] does not create a false 271; exactly one active 271.</td>
+<td><input id="notes-6" type="text" placeholder="Notes / failure details"></td>
+</tr>
+<tr data-result="">
+<td><select id="status-7"><option value="">—</option><option>PASS</option><option>FAIL</option><option>SKIP</option></select></td>
+<td><strong>6.272</strong></td>
+<td>Milestone + medieval-label separation</td>
+<td><a class="open" href="#" data-path="?book=6&amp;niese=272">Open test</a></td>
+<td>Latin VI.272 begins “Cumque aput ceilanos esset…”; [XIII.i] does not create a false 272; exactly one active 272.</td>
+<td><input id="notes-7" type="text" placeholder="Notes / failure details"></td>
+</tr>
+<tr data-result="">
+<td><select id="status-8"><option value="">—</option><option>PASS</option><option>FAIL</option><option>SKIP</option></select></td>
+<td><strong>6.336</strong></td>
+<td>Intentional syntactically awkward cut</td>
+<td><a class="open" href="#" data-path="?book=6&amp;niese=336">Open test</a></td>
+<td>Latin VI.336 begins “esse finiendum”; Greek marker remains at the certified Niese position; switching preserves 6.336.</td>
+<td><input id="notes-8" type="text" placeholder="Notes / failure details"></td>
+</tr>
+<tr data-result="">
+<td><select id="status-9"><option value="">—</option><option>PASS</option><option>FAIL</option><option>SKIP</option></select></td>
+<td><strong>6.355</strong></td>
+<td>Reordered reporting-verb boundary</td>
+<td><a class="open" href="#" data-path="?book=6&amp;niese=355">Open test</a></td>
+<td>Latin VI.355 begins “ait ergo quidem”; switching preserves 6.355; Previous/Next reach 354/356.</td>
+<td><input id="notes-9" type="text" placeholder="Notes / failure details"></td>
+</tr>
+<tr data-result="">
+<td><select id="status-10"><option value="">—</option><option>PASS</option><option>FAIL</option><option>SKIP</option></select></td>
+<td><strong>6.378</strong></td>
+<td>Book endpoint</td>
+<td><a class="open" href="#" data-path="?book=6&amp;niese=378">Open test</a></td>
+<td>Loads final Niese section VI.378; Greek↔Latin switching preserves 6.378; Previous reaches 6.377; Next must not advance beyond Book VI.</td>
+<td><input id="notes-10" type="text" placeholder="Notes / failure details"></td>
+</tr>
+<tr class="group"><td colspan="6">Regression — Books II–V</td></tr>
+<tr data-result="">
+<td><select id="status-11"><option value="">—</option><option>PASS</option><option>FAIL</option><option>SKIP</option></select></td>
+<td><strong>2.95</strong></td>
+<td>Book II protected true 2.95</td>
+<td><a class="open" href="#" data-path="?book=2&amp;niese=95">Open test</a></td>
+<td>Loads the unique true 2.95, not a medieval/composite false positive; Greek↔Latin switching preserves 2.95.</td>
+<td><input id="notes-11" type="text" placeholder="Notes / failure details"></td>
+</tr>
+<tr data-result="">
+<td><select id="status-12"><option value="">—</option><option>PASS</option><option>FAIL</option><option>SKIP</option></select></td>
+<td><strong>3.240</strong></td>
+<td>Explicit-lacuna regression</td>
+<td><a class="open" href="#" data-path="?book=3&amp;niese=240">Open test</a></td>
+<td>Loads 3.240 using the established explicit-lacuna representation without breaking exact-view or navigation.</td>
+<td><input id="notes-12" type="text" placeholder="Notes / failure details"></td>
+</tr>
+<tr data-result="">
+<td><select id="status-13"><option value="">—</option><option>PASS</option><option>FAIL</option><option>SKIP</option></select></td>
+<td><strong>4.272</strong></td>
+<td>Book IIII human-cut regression</td>
+<td><a class="open" href="#" data-path="?book=4&amp;niese=272">Open test</a></td>
+<td>Loads the certified 4.272 boundary; Greek↔Latin switching preserves 4.272.</td>
+<td><input id="notes-13" type="text" placeholder="Notes / failure details"></td>
+</tr>
+<tr data-result="">
+<td><select id="status-14"><option value="">—</option><option>PASS</option><option>FAIL</option><option>SKIP</option></select></td>
+<td><strong>5.33</strong></td>
+<td>Book V composite-label correction regression</td>
+<td><a class="open" href="#" data-path="?book=5&amp;niese=33">Open test</a></td>
+<td>Loads true 5.33 rather than the medieval-only [I.x] label; Greek↔Latin switching preserves 5.33.</td>
+<td><input id="notes-14" type="text" placeholder="Notes / failure details"></td>
+</tr>
+<tr data-result="">
+<td><select id="status-15"><option value="">—</option><option>PASS</option><option>FAIL</option><option>SKIP</option></select></td>
+<td><strong>5.362</strong></td>
+<td>Previous-book endpoint regression</td>
+<td><a class="open" href="#" data-path="?book=5&amp;niese=362">Open test</a></td>
+<td>Loads final Book V Niese section correctly; endpoint navigation remains intact.</td>
+<td><input id="notes-15" type="text" placeholder="Notes / failure details"></td>
+</tr>
+</tbody></table>
+</main>
+<script>
+(()=>{
+const KEY="latinjosephus-ant6-browser-qa-v1", N=15;
+const base=document.getElementById("base");
+function summarize(){
+ let p=0,f=0,s=0,o=0;
+ for(let i=1;i<=N;i++){const v=document.getElementById("status-"+i).value;document.getElementById("status-"+i).closest("tr").dataset.result=v;if(v==="PASS")p++;else if(v==="FAIL")f++;else if(v==="SKIP")s++;else o++;}
+ total.textContent="Total: "+N; pass.textContent="PASS: "+p; fail.textContent="FAIL: "+f; skip.textContent="SKIP: "+s; open.textContent="Unmarked: "+o;
+}
+function state(){
+ const results=[]; for(let i=1;i<=N;i++) results.push({index:i,status:document.getElementById("status-"+i).value,notes:document.getElementById("notes-"+i).value});
+ return {title:"Antiquities VI Niese Browser Regression QA",savedAt:new Date().toISOString(),baseUrl:base.value,results};
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(state()));summarize();}
+function load(){
+ const raw=localStorage.getItem(KEY); if(raw){try{const st=JSON.parse(raw);if(st.baseUrl)base.value=st.baseUrl;for(const r of st.results||[]){const a=document.getElementById("status-"+r.index),b=document.getElementById("notes-"+r.index);if(a)a.value=r.status||"";if(b)b.value=r.notes||"";}}catch(e){}} summarize();
+}
+document.querySelectorAll(".open").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();const root=base.value.replace(/\/?$/,"/");window.open(root+a.dataset.path,"_blank","noopener");}));
+for(let i=1;i<=N;i++){document.getElementById("status-"+i).addEventListener("change",save);document.getElementById("notes-"+i).addEventListener("input",save);}
+base.addEventListener("change",save); save.onclick=save;
+document.getElementById("reset").onclick=()=>{if(!confirm("Clear all saved QA results and notes?"))return;localStorage.removeItem(KEY);for(let i=1;i<=N;i++){document.getElementById("status-"+i).value="";document.getElementById("notes-"+i).value="";}summarize();};
+document.getElementById("export").onclick=()=>{save();const blob=new Blob([JSON.stringify(state(),null,2)],{type:"application/json"}),u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="Antiquities_BookVI_browser_QA_results.json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),500);};
+load();
+})();
+</script>
+</body></html>
