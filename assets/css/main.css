@@ -821,6 +821,14 @@ html[data-theme=dark] .lj-navbar .lj-brand__dark {
   outline-offset: 4px;
 }
 
+/* Preserve Font Awesome glyphs in the dark-mode toggle.
+   The Latin Josephus UI font must not override this icon font. */
+#light-toggle .fas,
+#light-toggle .fas::before {
+  font-family: "Font Awesome 5 Free" !important;
+  font-weight: 900;
+}
+
 /* Latin Josephus typography pilot. */
 /*******************************************************************************
  * Latin Josephus typography pilot
