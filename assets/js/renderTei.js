@@ -27,6 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const sectionSelectMenu = document.getElementById("section-selector");
   const nieseSelectForm = document.querySelector("#niese-select form");
   const nieseSelectMenu = document.getElementById("niese-selector");
+  const subchapterSelectForm = document.querySelector("#subchapter-select form");
+  const subchapterSelectMenu = document.getElementById("subchapter-selector");
   const viewingLevelSelectMenu = document.getElementById("level-select");
 
   const sourceSelectMenus = {
@@ -55,6 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
       bookCount: 20,
       idPrefix: "book",
       paddedBookId: true,
+      traditionalStructure: "assets/xml/antiquities/structure.xml",
       alignment: {
         language: "Latin",
         source: "bamberg78"
@@ -89,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       },
       preface: {
-        label: "Preface",
+        label: "Proem",
         value: "preface",
         filename: "preface",
         idPrefix: "preface"
@@ -284,11 +287,217 @@ document.addEventListener("DOMContentLoaded", () => {
   let state = {
     bookNum: activeWork.preface ? activeWork.preface.value : "01",
     chapterNum: null,
+    subchapterNum: null,
     sectionNum: null,
     nieseNum: null,
     viewingLevel: 'book-level',
     lodgeNotesVisible: true,
     sources: initialSources
+  };
+
+
+  // Antiquities explicitly opts into certified, source-qualified structure.
+  // Other works keep their existing adapters and URL semantics.
+  const usesTraditionalStructure = () => Boolean(activeWork.traditionalStructure);
+  let traditionalRegistry = null;
+  let alignmentRangeRegistry = [];
+  let traditionalRegistryRequest = null;
+  const loadTraditionalRegistry = async () => {
+    if (!usesTraditionalStructure()) return;
+    if (!traditionalRegistryRequest) {
+      traditionalRegistryRequest = (async () => {
+        const response = await fetch(`/${activeWork.traditionalStructure}?v=${teiCacheToken}`);
+        if (!response.ok) throw new Error("The Chapter/Subchapter registry could not be loaded.");
+        const xml = new DOMParser().parseFromString(await response.text(), "application/xml");
+        if (xml.querySelector("parsererror")) throw new Error("Invalid structural registry XML.");
+        const valueOf = value => value.localName === "fs" ? fields(value)
+          : value.localName === "vColl" ? [...value.children].map(valueOf) : value.textContent;
+        const fields = fs => Object.fromEntries([...fs.children].map(f =>
+          [f.getAttribute("name"), valueOf(f.firstElementChild)]));
+        const items = [...xml.getElementsByTagNameNS("http://www.tei-c.org/ns/1.0", "item")];
+        const records = type => items.filter(item => item.parentElement.getAttribute("type") === type)
+          .map(item => ({id: item.getAttributeNS("http://www.w3.org/XML/1998/namespace", "id"),
+            ...fields([...item.children].find(el => el.localName === "fs"))}));
+        traditionalRegistry = records("traditional-boundaries");
+        alignmentRangeRegistry = records("alignment-ranges");
+      })();
+    }
+    await traditionalRegistryRequest;
+  };
+  const traditionalRows = (scheme, chapter = null) => (traditionalRegistry || []).filter(row =>
+    row.scheme === scheme
+    && (isPreface() ? row.context === "Proem" : row.context !== "Proem" && Number(row.book) === Number(state.bookNum))
+    && (chapter === null || row.chapter === String(chapter))
+  );
+  const traditionalSelection = () => state.viewingLevel === "subchapter-level"
+    ? traditionalRows("subchapter", isPreface() ? "" : state.chapterNum)
+      .find(row => row.subchapter === String(state.subchapterNum))
+    : traditionalRows("chapter").find(row => row.chapter === String(state.chapterNum));
+  const selectAvailableTraditionalSubchapter = () => {
+    const rows = traditionalRows("subchapter", isPreface() ? "" : state.chapterNum);
+    state.subchapterNum = rows[0]?.subchapter || null;
+    if (!state.subchapterNum) state.viewingLevel = isPreface() ? "book-level" : "chapter-level";
+  };
+  const structuralUnavailable = (language, reason) => {
+    const notice = document.createElement("div");
+    notice.className = "alert alert-secondary structural-unavailable";
+    notice.setAttribute("role", "status");
+    notice.textContent = `${language}: ${reason} No nearby text has been substituted.`;
+    return notice;
+  };
+  const traditionalPoint = (data, locator) => {
+    if (!locator || locator.available !== "true") return null;
+    let node = data.querySelector(`[id="${locator.target}"]`);
+    if (!node) return null;
+    if (locator.kind === "element-edge") {
+      for (const step of locator.edge.split("/")) {
+        const match = step.match(/^([\w-]+)\[(\d+)\]$/);
+        if (!match) return null;
+        node = [...node.children].filter(child => child.localName === `tei-${match[1]}`)[Number(match[2]) - 1];
+        if (!node) return null;
+      }
+    }
+    return {node, paragraph: node.closest("tei-p"), kind: locator.kind};
+  };
+  // Display boundaries can include a heading/label before the independent citation/text point.
+  const traditionalRangePoint = (data, locator) => traditionalPoint(data, locator?.["boundary-start"] || locator);
+  // Independent witness spans may be assembled in registered canonical order.
+  // The resolver knows no book, chapter, source-number correction or transposition case.
+  const traditionalRangeView = (language, data, record) => {
+    if (!record) return structuralUnavailable(language, "Select a valid Chapter or Subchapter.");
+    const endRecord = record.end === "BOOK_END" ? null : traditionalRegistry.find(row => row.id === record.end);
+    const endLocator = record.endLocator || endRecord?.[language];
+    const spans = record[language]?.spans || [{start: record[language], end: endLocator || {kind: "book-end"}}];
+    const wrapper = document.createElement("tei-div");
+    wrapper.setAttribute("type", record.scheme);
+    wrapper.dataset.structuralIdentity = record.id;
+    if (record["verification-status"]) wrapper.dataset.verificationStatus = record["verification-status"];
+    if (record["canonical-niese"]) wrapper.dataset.canonicalNiese = record["canonical-niese"];
+    for (const [index, span] of spans.entries()) {
+      const start = traditionalRangePoint(data, span.start);
+      if (!start) return structuralUnavailable(language, "This certified start has no mapped current text.");
+      const end = span.end?.kind === "book-end" ? null : traditionalRangePoint(data, span.end);
+      if (span.end?.kind !== "book-end" && !end)
+        return structuralUnavailable(language, "The certified range end has no mapped current text.");
+      if (end && (start.node === end.node || !(start.node.compareDocumentPosition(end.node) & Node.DOCUMENT_POSITION_FOLLOWING)))
+        return structuralUnavailable(language, "The registered physical span is empty or reversed.");
+      const range = document.createRange();
+      if (start.kind === "paragraph") range.setStart(start.node, 0);
+      else range.setStartBefore(start.node);
+      if (end) {
+        if (end.kind === "paragraph") range.setEnd(end.node, 0);
+        else range.setEndBefore(end.node);
+      } else {
+        const body = data.querySelector("tei-body") || data;
+        range.setEnd(body, body.childNodes.length);
+      }
+      const fragment = spans.length === 1 ? wrapper : document.createElement("tei-div");
+      if (spans.length > 1) {
+        fragment.setAttribute("type", "physical-fragment");
+        fragment.dataset.fragmentOrdinal = String(index + 1);
+        fragment.dataset.sourceStart = span.start.target;
+        fragment.dataset.sourceEnd = span.end.target || "book-end";
+        fragment.dataset.sourceDescription = span.label || "";
+      }
+      if (start.paragraph && (!end || start.paragraph === end.paragraph) && range.commonAncestorContainer === start.paragraph) {
+        const shell = start.paragraph.cloneNode(false);
+        shell.appendChild(range.cloneContents()); fragment.appendChild(shell);
+      } else fragment.appendChild(range.cloneContents());
+      // Discard only the artificial empty shell at an exclusive paragraph endpoint.
+      if (end?.kind === "paragraph") fragment.querySelectorAll("tei-p").forEach(p => {
+        if (p.id === end.node.id && !p.textContent && !p.children.length) p.remove();
+      });
+      if (spans.length > 1) wrapper.appendChild(fragment);
+    }
+    // A source paragraph can supply several fragments. Retain its stable identity
+    // as provenance on every clone without emitting duplicate DOM IDs.
+    const seen = new Set();
+    wrapper.querySelectorAll("[id]").forEach(node => {
+      if (seen.has(node.id)) {node.dataset.sourceId = node.id; node.removeAttribute("id");}
+      else seen.add(node.id);
+    });
+    return wrapper;
+  };
+  const updateTraditionalNotice = () => {
+    document.getElementById("traditional-reader-notice")?.remove();
+    if (!usesTraditionalStructure() || !["chapter-level", "subchapter-level"].includes(state.viewingLevel)) return;
+    const explanation = traditionalSelection()?.["reader-note"];
+    const panes = document.getElementById("pane-container");
+    if (!explanation || !panes) return;
+    const notice = document.createElement("aside");
+    notice.id = "traditional-reader-notice";
+    notice.className = "alert alert-secondary";
+    notice.dataset.structuralNotice = "true";
+    const text = document.createElement("p"); text.textContent = explanation;
+    const url = new URL(window.location.href);
+    ["chapter", "subchapter", "niese", "unit", "num"].forEach(key => url.searchParams.delete(key));
+    const link = document.createElement("a"); link.href = url.href; link.textContent = "See Bamberg’s manuscript order in Book view";
+    notice.append(text, link); panes.before(notice);
+  };
+  const antiquitiesUnitView = (language, data) => {
+    const canonicalId = `latin-${currentIdBase()}-num${state.sectionNum}`;
+    const canonical = canonicalFullData?.querySelector(`[id="${canonicalId}"]`);
+    if (!canonical) return structuralUnavailable(language, "This Alignment unit has no current target.");
+    if (language === activeWork.alignment.language) return canonical;
+    const binding = alignmentRangeRegistry.find(row => row["canonical-target"] === canonicalId && row.language === language);
+    if (binding) return traditionalRangeView(language, data, {
+      id: binding.id, scheme: "alignment-unit", [language]: binding.start,
+      end: "BOOK_END", endLocator: binding.end
+    });
+    const exactId = canonicalId.replace(/^latin-/, `${language.toLowerCase()}-`);
+    const paragraphs = [...data.querySelectorAll("tei-p")].filter(p =>
+      normalizedSameAsTargets(p).includes(canonicalId) || p.id === exactId
+    );
+    if (!paragraphs.length) return structuralUnavailable(language, "This Alignment unit has no mapped current text.");
+    const wrapper = document.createElement("tei-div");
+    paragraphs.forEach(p => wrapper.appendChild(p.cloneNode(true)));
+    return wrapper;
+  };
+  const readTraditionalUrl = () => {
+    const params = new URLSearchParams(window.location.search);
+    const rawBook = params.get("book");
+    const bookNum = rawBook === "preface" ? "preface"
+      : /^[1-9]\d*$/.test(rawBook || "") && Number(rawBook) <= activeWork.bookCount
+        ? String(Number(rawBook)).padStart(2, "0") : defaultBookNum();
+    const positive = key => /^[1-9]\d*$/.test(params.get(key) || "") ? String(Number(params.get(key))) : null;
+    const sourceSelections = Object.fromEntries(Object.keys(activeWork.languages).flatMap(language => {
+      const source = params.get(language.toLowerCase());
+      return sourceAvailableForBook(language, source, bookNum) ? [[language, source]] : [];
+    }));
+    const rawUnit = params.get("unit") || params.get("num");
+    return {bookNum, chapterNum: bookNum === "preface" ? null : positive("chapter"),
+      subchapterNum: positive("subchapter"), unitNum: /^[1-9]\d*[a-z]*$/.test(rawUnit || "") ? rawUnit : null,
+      nieseNum: activeWork.nieseBooks.includes(Number(bookNum)) ? positive("niese") : null,
+      sourceSelections, hasLocationParams: params.size > 0};
+  };
+  const applyTraditionalUrl = () => {
+    const location = readTraditionalUrl();
+    Object.assign(state, {bookNum: location.bookNum, chapterNum: location.chapterNum,
+      subchapterNum: location.subchapterNum, sectionNum: location.unitNum, nieseNum: location.nieseNum,
+      sources: {...initialSources, ...location.sourceSelections}});
+    if (state.nieseNum) {
+      state.viewingLevel = "niese-level"; state.chapterNum = null; state.subchapterNum = null; state.sectionNum = null;
+    } else if (state.sectionNum) {
+      state.viewingLevel = "section-level"; state.chapterNum = null; state.subchapterNum = null;
+    } else if (state.subchapterNum) state.viewingLevel = "subchapter-level";
+    else state.viewingLevel = state.chapterNum ? "chapter-level" : "book-level";
+    return location.hasLocationParams;
+  };
+  const syncTraditionalUrl = mode => {
+    const url = new URL(window.location.href);
+    ["book", "chapter", "subchapter", "unit", "num", "niese"].forEach(key => url.searchParams.delete(key));
+    url.searchParams.set("book", isPreface() ? "preface" : String(Number(state.bookNum)));
+    if (["chapter-level", "subchapter-level"].includes(state.viewingLevel) && state.chapterNum)
+      url.searchParams.set("chapter", state.chapterNum);
+    if (state.viewingLevel === "subchapter-level" && state.subchapterNum) url.searchParams.set("subchapter", state.subchapterNum);
+    if (state.viewingLevel === "section-level" && state.sectionNum) url.searchParams.set("unit", state.sectionNum);
+    if (state.viewingLevel === "niese-level" && state.nieseNum) url.searchParams.set("niese", state.nieseNum);
+    Object.entries(activeWork.languages).forEach(([language, config]) => {
+      const key = language.toLowerCase(), source = state.sources[language];
+      if (source && source !== config.defaultSource) url.searchParams.set(key, source);
+      else url.searchParams.delete(key);
+    });
+    if (url.href !== window.location.href) window.history[mode === "push" ? "pushState" : "replaceState"]({}, "", url);
   };
 
   const sourceAvailableForBook = (
@@ -366,6 +575,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const readNavigationFromUrl = () => {
+    if (usesTraditionalStructure()) return readTraditionalUrl();
     const params = new URLSearchParams(window.location.search);
 
     const sourceParamKeys = Object.keys(activeWork.languages).map(
@@ -475,6 +685,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const applyNavigationFromUrl = () => {
+    if (usesTraditionalStructure()) return applyTraditionalUrl();
     const location = readNavigationFromUrl();
 
     state.bookNum = location.bookNum;
@@ -533,6 +744,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const syncUrlFromState = (mode = "replace") => {
+    if (usesTraditionalStructure()) return syncTraditionalUrl(mode);
     const url = new URL(window.location.href);
 
     const numericBook = /^\d+$/.test(String(state.bookNum))
@@ -777,6 +989,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (visibleLabel) return visibleLabel;
     }
 
+    if (usesTraditionalStructure()) return `Alignment unit ${sectionNum}`;
     const label = ["antiquities", "bellum"].includes(activeWork.slug)
       ? "Sub-chapter"
       : "Section";
@@ -1948,6 +2161,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const selectView = (language, data, idBase) => {
     if (!data) return null;
+    if (usesTraditionalStructure()) {
+      if (["chapter-level", "subchapter-level"].includes(state.viewingLevel))
+        return traditionalRangeView(language, data, traditionalSelection());
+      if (state.viewingLevel === "section-level" && state.sectionNum) return antiquitiesUnitView(language, data);
+      if (state.viewingLevel === "section-level") return data;
+    }
 
     const usesCanonicalIds = displayedSourceUsesCanonicalIds(language);
 
@@ -2093,6 +2312,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const selectCanonicalView = (data, idBase) => {
     if (!data) return null;
+    if (usesTraditionalStructure()) return selectView(activeWork.alignment.language, data, idBase);
 
     switch(state.viewingLevel) {
       case "book-level":
@@ -2277,6 +2497,17 @@ document.addEventListener("DOMContentLoaded", () => {
       && !isPreface()
     );
     const showSection = state.viewingLevel === "section-level";
+    subchapterSelectForm?.classList.toggle("hidden", !usesTraditionalStructure() || state.viewingLevel !== "subchapter-level");
+    const subchapterControl = document.getElementById("subchapter-level");
+    if (subchapterControl) {
+      subchapterControl.closest(".form-check").hidden = !usesTraditionalStructure();
+      if (usesTraditionalStructure()) {
+        const available = traditionalRows("subchapter", isPreface() ? "" : state.chapterNum).length > 0;
+        subchapterControl.disabled = !available;
+        if (subchapterSelectMenu) subchapterSelectMenu.disabled = !available;
+      }
+    }
+    if (usesTraditionalStructure() && state.viewingLevel === "section-level") chapterSelectForm.classList.add("hidden");
     const showNiese = state.viewingLevel === "niese-level" && nieseAvailable;
 
     const sectionIsNiese = sectionLevelUsesNiese();
@@ -2287,7 +2518,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (sectionSelectorLabel) {
       sectionSelectorLabel.textContent = sectionIsNiese
         ? "Select a Niese section:"
-        : "Select a sub-chapter:";
+        : (usesTraditionalStructure() ? "Select an Alignment unit:" : "Select a sub-chapter:");
     }
 
     const sectionLevelControl = document.getElementById("section-level");
@@ -2298,10 +2529,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (sectionLevelLabel) {
       sectionLevelLabel.textContent = sectionIsNiese
         ? "Niese section"
-        : "Sub-chapter";
+        : (usesTraditionalStructure() ? "Alignment unit" : "Sub-chapter");
     }
 
-    chapterSelectForm.classList.toggle("hidden", !showChapter);
+    chapterSelectForm.classList.toggle("hidden", !showChapter || (usesTraditionalStructure() && showSection));
     sectionSelectForm.classList.toggle("hidden", !showSection);
     if (nieseSelectForm) nieseSelectForm.classList.toggle("hidden", !showNiese);
 
@@ -2318,6 +2549,7 @@ document.addEventListener("DOMContentLoaded", () => {
     bookSelectMenu.value = state.bookNum;
     chapterSelectMenu.value = state.chapterNum ?? "";
     sectionSelectMenu.value = state.sectionNum ?? "";
+    if (subchapterSelectMenu) subchapterSelectMenu.value = state.subchapterNum ?? "";
     if (nieseSelectMenu) nieseSelectMenu.value = state.nieseNum ?? "";
 
     const levelControl = document.getElementById(state.viewingLevel);
@@ -2329,6 +2561,7 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   const normalizeNavigationState = () => {
+    if (usesTraditionalStructure()) return false;
     let changed = false;
 
     if (
@@ -2421,6 +2654,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const fetchData = async () => {
+    await loadTraditionalRegistry();
     const filename = currentFilename();
     const idBase = currentIdBase();
 
@@ -2467,6 +2701,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     setChapterSelectOptions();
+    setTraditionalSubchapterOptions();
     setSectionSelectOptions();
     setNieseSelectOptions();
   };
@@ -2561,6 +2796,7 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         }
 
+        if (usesTraditionalStructure()) data.querySelectorAll('tei-anchor[type="traditional-boundary"]').forEach(marker => marker.hidden = true);
         decorateNieseMarkers(language, data);
         decorateContraApionemSectionMarkers(language, data);
         pane.appendChild(data);
@@ -2590,9 +2826,12 @@ document.addEventListener("DOMContentLoaded", () => {
         )
         : "";
 
+    if (usesTraditionalStructure() && state.viewingLevel === "subchapter-level")
+      sectionLabel.innerText = state.subchapterNum ? `Subchapter ${state.subchapterNum}` : "";
     updateLanguageUI();
     updateNavigationForms();
     addContraApionemTransmissionNotice();
+    updateTraditionalNotice();
     syncNavigationControls();
     // Optional scholarly parallels live outside the textual alignment layer.
     if (activeWork.slug === "deh") {
@@ -2616,7 +2855,9 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const parseAnnotations = () => {
-    const annotations = canonicalFullData.getElementsByTagName("tei-app");
+    const annotations = usesTraditionalStructure()
+      ? [...canonicalFullData.getElementsByTagName("tei-app")]
+      : canonicalFullData.getElementsByTagName("tei-app");
     annotatedParagraphs = [];
     let htmlString = '';
 
@@ -2678,7 +2919,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const setTraditionalSubchapterOptions = () => {
+    if (!subchapterSelectMenu || !usesTraditionalStructure()) return;
+    subchapterSelectMenu.options.length = 0;
+    subchapterSelectMenu.add(new Option("", ""));
+    traditionalRows("subchapter", isPreface() ? "" : (state.chapterNum || ""))
+      .forEach(row => subchapterSelectMenu.add(new Option(row.display, row.subchapter)));
+  };
   const setChapterSelectOptions = () => {
+    if (usesTraditionalStructure()) {
+      chapterSelectMenu.options.length = 0;
+      chapterSelectMenu.add(new Option("", ""));
+      traditionalRows("chapter").forEach(row => chapterSelectMenu.add(new Option(row.display, row.chapter)));
+      return;
+    }
     if (state.viewingLevel === "book-level") return;
 
     let latinChapters = [];
@@ -2720,6 +2974,17 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const setSectionSelectOptions = () => {
+    if (usesTraditionalStructure()) {
+      sectionSelectMenu.options.length = 0;
+      sectionSelectMenu.add(new Option("", ""));
+      const prefix = `latin-${currentIdBase()}-num`;
+      canonicalFullData.querySelectorAll("tei-p[id]").forEach(p => {
+        if (!p.id.startsWith(prefix)) return;
+        const suffix = p.id.slice(prefix.length);
+        if (suffix) sectionSelectMenu.add(new Option(suffix, suffix));
+      });
+      return;
+    }
     if (state.viewingLevel !== "section-level") return;
     if (activeWork.sectionMilestoneUnit) {
       // Section navigation is global by default. If a Boysen chapter has
@@ -2971,6 +3236,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       setState(() => {
         state.bookNum = event.target.value;
+        if (usesTraditionalStructure()) { state.subchapterNum = null; state.viewingLevel = "book-level"; }
         state.chapterNum = null;
         state.sectionNum = null;
         state.nieseNum = null;
@@ -2982,6 +3248,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       setState(() => {
         state.chapterNum = event.target.value;
+        if (usesTraditionalStructure()) {
+          state.subchapterNum = null;
+          state.viewingLevel = state.chapterNum ? (state.viewingLevel === "subchapter-level" ? "subchapter-level" : "chapter-level") : "book-level";
+          if (state.viewingLevel === "subchapter-level") selectAvailableTraditionalSubchapter();
+        }
         state.sectionNum = null;
         state.nieseNum = null;
       });
@@ -2991,14 +3262,24 @@ document.addEventListener("DOMContentLoaded", () => {
       sectionLabel.innerText = sectionDisplayLabel(event.target.value);
       setState(() => {
         state.sectionNum = event.target.value;
+        if (usesTraditionalStructure()) { state.viewingLevel = "section-level"; state.chapterNum = null; state.subchapterNum = null; }
         state.nieseNum = null;
       });
     });
 
+    subchapterSelectMenu?.addEventListener("change", event => {
+      if (!usesTraditionalStructure()) return;
+      setState(() => {
+        state.subchapterNum = event.target.value || null;
+        state.viewingLevel = state.subchapterNum ? "subchapter-level" : (isPreface() ? "book-level" : "chapter-level");
+        state.sectionNum = null; state.nieseNum = null;
+      });
+    });
     if (nieseSelectMenu) {
       nieseSelectMenu.addEventListener("change", (event) => {
         setState(() => {
           state.nieseNum = event.target.value || null;
+          if (usesTraditionalStructure()) { state.subchapterNum = null; state.viewingLevel = "niese-level"; }
           state.chapterNum = null;
           state.sectionNum = null;
         });
@@ -3008,6 +3289,23 @@ document.addEventListener("DOMContentLoaded", () => {
     viewingLevelSelectMenu.addEventListener("change", (event) => {
       setState(() => {
         const nextLevel = event.target.value;
+        if (usesTraditionalStructure()) {
+          state.viewingLevel = nextLevel;
+          if (["chapter-level", "subchapter-level"].includes(nextLevel)) {
+            state.sectionNum = null; state.nieseNum = null;
+            if (!isPreface() && !state.chapterNum) state.chapterNum = traditionalRows("chapter")[0]?.chapter || null;
+            state.subchapterNum = null;
+            if (nextLevel === "subchapter-level") selectAvailableTraditionalSubchapter();
+            if (isPreface() && nextLevel === "chapter-level") state.viewingLevel = "book-level";
+          } else {
+            state.chapterNum = null; state.subchapterNum = null;
+            if (nextLevel !== "section-level") state.sectionNum = null;
+            else if (!state.sectionNum) state.sectionNum = [...sectionSelectMenu.options].find(option => option.value)?.value || null;
+            if (nextLevel !== "niese-level") state.nieseNum = null;
+            else if (!state.nieseNum) state.nieseNum = String(canonicalNieseStartEntries()[0]?.number || "") || null;
+          }
+          return;
+        }
         state.viewingLevel = nextLevel;
 
         if (nextLevel === "niese-level") {
