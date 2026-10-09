@@ -121,7 +121,9 @@ document.addEventListener("DOMContentLoaded", () => {
         9: "assets/xml/antiquities/niese/book-09.json",
         10: "assets/xml/antiquities/niese/book-10.json",
         12: "assets/xml/antiquities/niese/book-12.json",
-        13: "assets/xml/antiquities/niese/book-13.json"
+        13: "assets/xml/antiquities/niese/book-13.json",
+        14: "assets/xml/antiquities/niese/book-14.json",
+        15: "assets/xml/antiquities/niese/book-15.json"
       },
       nieseRanges: {
         1: [27, 346],
@@ -431,7 +433,11 @@ document.addEventListener("DOMContentLoaded", () => {
       for (const step of locator.edge.split("/")) {
         const match = step.match(/^([\w-]+)\[(\d+)\]$/);
         if (!match) return null;
-        node = [...node.children].filter(child => child.localName === `tei-${match[1]}`)[Number(match[2]) - 1];
+        // Certified citation additions must not shift registered structural ordinals.
+        const milestoneUnits = nieseIdentityRegistry()?.structuralMilestoneUnits;
+        node = [...node.children].filter(child => child.localName === `tei-${match[1]}`
+          && (match[1] !== "milestone" || !milestoneUnits
+            || milestoneUnits.includes(child.getAttribute("unit"))))[Number(match[2]) - 1];
         if (!node) return null;
       }
     }
