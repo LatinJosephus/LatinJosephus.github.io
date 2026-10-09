@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://www.latinjosephus.org//sitemap.xml
+Sitemap: https://latinjosephus.github.io/sitemap.xml
