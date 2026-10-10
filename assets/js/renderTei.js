@@ -117,13 +117,20 @@ document.addEventListener("DOMContentLoaded", () => {
       milestoneChapterBooks: [15, 16, 17, 18, 19, 20],
       nieseBooks: [1, 2, 3, 4, 5, 6, 7],
       nieseIdentityBooks: {
+        preface: "assets/xml/antiquities/niese/preface.json",
         8: "assets/xml/antiquities/niese/book-08.json",
         9: "assets/xml/antiquities/niese/book-09.json",
         10: "assets/xml/antiquities/niese/book-10.json",
+        11: "assets/xml/antiquities/niese/book-11.json",
         12: "assets/xml/antiquities/niese/book-12.json",
         13: "assets/xml/antiquities/niese/book-13.json",
         14: "assets/xml/antiquities/niese/book-14.json",
-        15: "assets/xml/antiquities/niese/book-15.json"
+        15: "assets/xml/antiquities/niese/book-15.json",
+        16: "assets/xml/antiquities/niese/book-16.json",
+        17: "assets/xml/antiquities/niese/book-17.json",
+        18: "assets/xml/antiquities/niese/book-18.json",
+        19: "assets/xml/antiquities/niese/book-19.json",
+        20: "assets/xml/antiquities/niese/book-20.json"
       },
       nieseRanges: {
         1: [27, 346],
@@ -463,18 +470,20 @@ document.addEventListener("DOMContentLoaded", () => {
       const end = span.end?.kind === "book-end" ? null : traditionalRangePoint(data, span.end);
       if (span.end?.kind !== "book-end" && !end)
         return structuralUnavailable(language, "The certified range end has no mapped current text.");
-      if (end && (start.node === end.node || !(start.node.compareDocumentPosition(end.node) & Node.DOCUMENT_POSITION_FOLLOWING)))
-        return structuralUnavailable(language, "The registered physical span is empty or reversed.");
       const range = document.createRange();
       if (start.kind === "paragraph") range.setStart(start.node, 0);
+      else if (start.kind === "paragraph-end") range.setStart(start.node, start.node.childNodes.length);
       else range.setStartBefore(start.node);
       if (end) {
         if (end.kind === "paragraph") range.setEnd(end.node, 0);
+        else if (end.kind === "paragraph-end") range.setEnd(end.node, end.node.childNodes.length);
         else range.setEndBefore(end.node);
       } else {
         const body = data.querySelector("tei-body") || data;
         range.setEnd(body, body.childNodes.length);
       }
+      if (range.collapsed)
+        return structuralUnavailable(language, "The registered physical span is empty or reversed.");
       const fragment = spans.length === 1 ? wrapper : document.createElement("tei-div");
       if (spans.length > 1) {
         fragment.setAttribute("type", "physical-fragment");
@@ -483,10 +492,19 @@ document.addEventListener("DOMContentLoaded", () => {
         fragment.dataset.sourceEnd = span.end.target || "book-end";
         fragment.dataset.sourceDescription = span.label || "";
       }
+      if (span.occurrence) fragment.dataset.sourceOccurrence = span.occurrence;
+      if (span.role) fragment.dataset.sourceRole = span.role;
+      if (span.continuationRank) fragment.dataset.continuationRank = String(span.continuationRank);
       if (start.paragraph && (!end || start.paragraph === end.paragraph) && range.commonAncestorContainer === start.paragraph) {
         const shell = start.paragraph.cloneNode(false);
         shell.appendChild(range.cloneContents()); fragment.appendChild(shell);
       } else fragment.appendChild(range.cloneContents());
+      if (span.role === "interpolation") {
+        const label = document.createElement("p");
+        label.className = "niese-source-passage-label";
+        label.textContent = span.sourceLabel || span.label || "Interpolated source passage";
+        fragment.prepend(label);
+      }
       // Discard only the artificial empty shell at an exclusive paragraph endpoint.
       if (end?.kind === "paragraph") fragment.querySelectorAll("tei-p").forEach(p => {
         if (p.id === end.node.id && !p.textContent && !p.children.length) p.remove();
@@ -516,6 +534,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const url = new URL(window.location.href);
     ["chapter", "subchapter", "niese", "unit", "num"].forEach(key => url.searchParams.delete(key));
     const link = document.createElement("a"); link.href = url.href; link.textContent = "See Bamberg’s manuscript order in Book view";
+    if (Object.values(traditionalSelection()).some(value => value?.["presentation-note"])) {
+      const title = document.createElement("strong");
+      title.textContent = "Canonical order from separate witness fragments";
+      notice.appendChild(title);
+    }
     notice.append(text, link); panes.before(notice);
   };
   const antiquitiesUnitView = (language, data) => {
@@ -651,15 +674,17 @@ document.addEventListener("DOMContentLoaded", () => {
     activeWork.urlUnitScope === "chapter"
   );
 
+  // Standalone source views keep their own registry key and citation extent.
+  const nieseBookKey = book => /^\d+$/.test(String(book)) ? Number(book) : book;
   const supportsNieseBook = book => Boolean(
-    activeWork.nieseBooks?.includes(Number(book))
-    || activeWork.nieseIdentityBooks?.[Number(book)]
+    activeWork.nieseBooks?.includes(nieseBookKey(book))
+    || activeWork.nieseIdentityBooks?.[nieseBookKey(book)]
   );
   const supportsNieseSections = () => supportsNieseBook(state.bookNum);
   const nieseIdentityRegistries = new Map();
-  const nieseIdentityRegistry = () => nieseIdentityRegistries.get(Number(state.bookNum)) || null;
+  const nieseIdentityRegistry = () => nieseIdentityRegistries.get(nieseBookKey(state.bookNum)) || null;
   const loadNieseIdentityRegistry = async () => {
-    const book = Number(state.bookNum), path = activeWork.nieseIdentityBooks?.[book];
+    const book = nieseBookKey(state.bookNum), path = activeWork.nieseIdentityBooks?.[book];
     if (!path || nieseIdentityRegistries.has(book)) return;
     const response = await fetch(`/${path}?v=${teiCacheToken}`);
     if (!response.ok) throw new Error("The Niese identity registry could not be loaded.");
@@ -1088,7 +1113,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const currentBookLabel = () => (
-    isPreface() ? activeWork.preface.label : `Book ${state.bookNum}`
+    nieseIdentityRegistry()?.label || (isPreface() ? activeWork.preface.label : `Book ${state.bookNum}`)
   );
 
   const chapterDisplayLabel = (chapterNum = state.chapterNum) => {
@@ -2013,6 +2038,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const [first, last] = range;
     const entries = [];
+    const declared = nieseIdentityRegistry()?.sections.filter(section => section[language]?.start) || [];
+
+    // Explicit fragment records distinguish logical identities from physical starts.
+    // Their ends and continuation ranks never depend on numeric or witness order.
+    const explicit = nieseIdentityRegistry()?.sections.filter(section => section[language]?.spans);
+    if (explicit?.length) {
+      explicit.forEach(section => section[language].spans.forEach(span => {
+        if (span.role === "interpolation") return;
+        const point = traditionalRangePoint(data, span.start);
+        if (point) entries.push({number: section.number, ...point,
+          occurrence: span.occurrence, continuationRank: span.continuationRank});
+      }));
+      return entries.sort((a, b) => a.node === b.node ? 0
+        : a.node.compareDocumentPosition(b.node) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1);
+    }
 
     data.querySelectorAll("tei-num").forEach(num => {
       // Header folio numbers and apparatus numbers are not narrative citations.
@@ -2021,7 +2061,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (language === "Latin" && nieseIdentityRegistry()?.suppressedLatinLabels.some(rule =>
         rule.paragraph === num.closest("tei-p")?.id && rule.label === num.textContent.trim())) return;
       const number = antiquitiesNieseLabelNumber(num);
-      if (!Number.isInteger(number) || number < first || number > last) return;
+      if (!Number.isInteger(number) || number < first || number > last
+        || declared.some(section => section.number === number)) return;
 
       entries.push({
         number,
@@ -2049,14 +2090,85 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
+    declared.forEach(section => {
+      const point = traditionalPoint(data, section[language].start);
+      if (point) entries.push({number: section.number, kind: "physical", node: point.node, physicalKind: point.kind});
+    });
+
     entries.sort((a, b) => {
       if (a.node === b.node) return 0;
 
       const position = a.node.compareDocumentPosition(b.node);
       return position & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
     });
-
     return entries;
+  };
+
+  const antiquitiesNieseFragmentView = (language, data, numbers) => {
+    const registry = nieseIdentityRegistry();
+    const identities = [...new Set(numbers.map(Number))].sort((a, b) => a - b)
+      .map(number => registry?.sections.find(section => section.number === number));
+    if (!identities.length) return null;
+    if (identities.every(identity => identity?.[language]?.contextTargets)) {
+      const targets = [...new Set(identities.flatMap(identity => identity[language].contextTargets))];
+      const paragraphs = targets.map(id => data.querySelector(`[id="${id}"]`)).filter(Boolean);
+      const wrapper = wrapAlignedParagraphs(paragraphs, "niese-context", identities.map(identity => identity.number).join(" "));
+      const note = document.createElement("p");
+      note.className = "niese-context-note";
+      note.textContent = `${language} context: exact Niese-level segmentation is unavailable for this source.`;
+      wrapper.prepend(note);
+      return wrapper;
+    }
+    if (identities.some(identity => !identity?.[language]?.spans)) return null;
+    const seen = new Set(), spans = [];
+    identities.forEach(identity => [...identity[language].spans].sort((a, b) =>
+      (a.attachmentBeforeRank ?? a.continuationRank ?? 0) - (b.attachmentBeforeRank ?? b.continuationRank ?? 0)
+      || Number(b.attachmentBeforeRank != null) - Number(a.attachmentBeforeRank != null)
+    ).forEach(span => {
+      if (span.occurrence && seen.has(span.occurrence)) return;
+      if (span.occurrence) seen.add(span.occurrence);
+      spans.push(span);
+    }));
+    let wrapper = traditionalRangeView(language, data, {
+      id: `niese-${state.bookNum}-${identities.map(identity => identity.number).join("-")}`,
+      scheme: "niese-section", [language]: {spans}
+    });
+    // Unranked source-qualified intervals retain their certified single-identity
+    // wrapper and citation label, including starts at inherited chapter anchors.
+    // Ranked/attached physical occurrences continue through the shared fragment view.
+    if (identities.length === 1 && spans.every(span => !span.occurrence
+      && span.continuationRank == null && span.attachmentBeforeRank == null)) {
+      const range = wrapper;
+      wrapper = document.createElement("tei-div2");
+      wrapper.setAttribute("type", "niese-section");
+      wrapper.append(...range.childNodes);
+      const start = traditionalRangePoint(data, spans[0].start);
+      const paragraph = wrapper.querySelector("tei-p");
+      if (paragraph && start?.node.getAttribute("unit") !== "niese")
+        paragraph.insertBefore(makeGeneratedNieseLabel(identities[0].number), paragraph.firstChild);
+    }
+    wrapper.setAttribute("n", identities.map(identity => identity.number).join(" "));
+    wrapper.dataset.syntheticSection = "niese-derived";
+    const notes = [...new Set(identities.map(identity => identity[language].note).filter(Boolean))];
+    notes.forEach(text => {
+      const note = document.createElement("p");
+      note.className = "alert alert-secondary niese-correspondence-note";
+      note.setAttribute("role", "note"); note.textContent = text;
+      wrapper.prepend(note);
+    });
+    if (spans.length > 1 && identities.some(identity => identity[language].fragmentNotice)) {
+      const notice = document.createElement("aside");
+      notice.className = "alert alert-secondary niese-correspondence-note";
+      notice.setAttribute("role", "note");
+      const text = document.createElement("p");
+      text.textContent = [...new Set(identities.map(identity => identity[language].fragmentNotice).filter(Boolean))].join(" ");
+      const url = new URL(window.location.href);
+      ["chapter", "subchapter", "niese", "unit", "num"].forEach(key => url.searchParams.delete(key));
+      const link = document.createElement("a"); link.href = url.href;
+      link.textContent = "See Bamberg’s manuscript order in Book view";
+      notice.append(text, link); wrapper.prepend(notice);
+    }
+    return wrapper;
   };
 
   const antiquitiesNieseExactView = (language, data, nieseNum) => {
@@ -2071,6 +2183,9 @@ document.addEventListener("DOMContentLoaded", () => {
       wrapper.appendChild(structuralUnavailable(language, identity[language].note || "This section is unavailable in this source."));
       return wrapper;
     }
+    if (identity?.[language]?.spans) {
+      return antiquitiesNieseFragmentView(language, data, [wanted]);
+    }
     const entries = antiquitiesNieseStartEntries(language, data);
     const index = entries.findIndex(entry => entry.number === wanted);
     if (index === -1) return null;
@@ -2079,7 +2194,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // An explicit narrative end can precede a preserved book subscription.
     const terminal = language === "Latin"
       ? data.querySelector('tei-milestone[unit="niese-end"]') : null;
-    const end = entries[index + 1] || (terminal ? {node: terminal, kind: "end"} : null);
+    // A source-qualified exclusive end can leave intervening source-only text
+    // in containing views without assigning it to an adjacent citation.
+    const endTarget = identity?.[language]?.endTarget;
+    const registeredEnd = endTarget ? data.querySelector(`[id="${endTarget}"]`) : null;
+    if (endTarget && !registeredEnd) throw new Error("The registered Niese end has no current target.");
+    const end = registeredEnd ? {node: registeredEnd, kind: "end"}
+      : entries[index + 1] || (terminal ? {node: terminal, kind: "end"} : null);
     const book = start.node.closest("tei-div1") || data.querySelector("tei-div1") || data;
     const wrapper = document.createElement("tei-div2");
     wrapper.setAttribute("type", "niese-section");
@@ -2108,7 +2229,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const setRangeStart = range => {
-      if (start.kind === "num") {
+      if (start.kind === "physical" && start.physicalKind === "paragraph") {
+        range.setStart(start.node, 0);
+      } else if (start.kind === "num" || start.kind === "physical") {
         range.setStartBefore(start.node);
       } else {
         range.setStartAfter(start.node);
@@ -2119,7 +2242,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const paragraphWrapper = startParagraph.cloneNode(false);
       const range = document.createRange();
       setRangeStart(range);
-      range.setEndBefore(end.node);
+      if (end.kind === "physical" && end.physicalKind === "paragraph") range.setEnd(end.node, 0);
+      else range.setEndBefore(end.node);
       paragraphWrapper.appendChild(range.cloneContents());
       wrapper.appendChild(paragraphWrapper);
     } else {
@@ -2127,7 +2251,8 @@ document.addEventListener("DOMContentLoaded", () => {
       setRangeStart(range);
 
       if (end) {
-        range.setEndBefore(endNode);
+        if (end.kind === "physical" && end.physicalKind === "paragraph") range.setEnd(end.node, 0);
+        else range.setEndBefore(endNode);
       } else {
         range.setEnd(book, book.childNodes.length);
       }
@@ -2148,7 +2273,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    if (start.kind === "milestone") {
+    if (start.kind === "milestone" || start.kind === "physical") {
       const firstParagraph = wrapper.querySelector("tei-p");
       if (firstParagraph) {
         firstParagraph.insertBefore(
@@ -2182,7 +2307,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const canonicalParagraph = start?.node?.closest("tei-p") || null;
     const canonicalId = canonicalParagraph?.id || identity?.contextTarget || null;
-    const paragraphs = canonicalId
+    const paragraphs = identity?.[language]?.contextTargets
+      ? [...new Set(identity[language].contextTargets)].map(id => data.querySelector(`[id="${id}"]`)).filter(Boolean)
+      : canonicalId
       ? alignedParagraphsForCanonicalId(language, data, canonicalId)
       : [];
 
@@ -2989,7 +3116,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Object.values(languagePanes).forEach(pane => {
       if (!pane) return;
 
-      pane.childNodes.forEach(node => {
+      [...pane.childNodes].forEach(node => {
         if (node.localName !== "h3") {
           pane.removeChild(node);
         }
@@ -3026,6 +3153,19 @@ document.addEventListener("DOMContentLoaded", () => {
         decorateOmittedGaps(language, data);
       }
     });
+
+    const related = nieseIdentityRegistry()?.relatedPassage;
+    if (related && (!state.nieseNum || Number(state.nieseNum) === nieseIdentityRegistry().range[1])) {
+      const note = document.createElement("p");
+      note.className = "niese-related-passage";
+      const link = document.createElement("a");
+      const url = new URL(window.location.href);
+      ["chapter", "subchapter", "bamberg", "unit", "num", "view", "niese"].forEach(key => url.searchParams.delete(key));
+      url.searchParams.set("book", related.book);
+      if (related.niese) url.searchParams.set("niese", related.niese);
+      link.href = url.href; link.textContent = related.label;
+      note.appendChild(link); latinPane.appendChild(note);
+    }
 
     bookLabel.innerText = currentBookLabel();
     chapterLabel.innerText = (
