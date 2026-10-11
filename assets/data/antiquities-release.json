@@ -1,7 +1,7 @@
 {
   "release": "Antiquities Niese Proem and Books I-XX",
-  "frozen_canonical_commit": "cf4cdb90e5fbcefbd0f2606d551d6a05100fd545",
-  "preview_parent_commit": "579fb392c626b8cd794db25db1d920b21cd3ac2b",
+  "frozen_canonical_commit": "4ffbc79b84806d180e9d713f9605255e7dfed73e",
+  "preview_parent_commit": "e846e84bc0cd9392b504f5a60f43870084e85403",
   "certified_identities": 7376,
   "proem_identities": 26,
   "books_I_XX_identities": 7350,
@@ -14,7 +14,7 @@
     {
       "canonical_path": "assets/js/renderTei.js",
       "preview_path": "assets/js/renderTei.js",
-      "sha256": "665f31b0a5cfe668692490c1c1ffece09097ca4cfa69ff0e516e862e56ce2d72"
+      "sha256": "c4741903c21c4cc0e4629cdca4d951a5c64ffcab6da5e44e40aaaebcc0e3cad3"
     },
     {
       "canonical_path": "assets/xml/antiquities/Greek/book-16.xml",
@@ -103,5 +103,12 @@
     }
   ],
   "preview_url": "https://latinjosephus.github.io/",
-  "generated_utc": "2026-10-10T21:08:15.751671+00:00"
+  "generated_utc": "2026-10-11T12:18:25.853842+00:00",
+  "previous_canonical_commit": "cf4cdb90e5fbcefbd0f2606d551d6a05100fd545",
+  "repair": "Whiston contextual English recovery VII.1–6; no scholarly XML or Niese boundary changes",
+  "publication_delta": [
+    "assets/js/renderTei.js",
+    "assets/data/antiquities-release.json"
+  ],
+  "English_policy": "Contextual Whiston paragraphs; no precise English Niese segmentation or public range control"
 }
