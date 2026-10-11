@@ -1,0 +1,320 @@
+{
+  "release": "Whiston Antiquities Proem/I–XI exact English integration",
+  "canonical_source_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+  "preview_parent_commit": "3e5649651c2f9c291b9e7c6630e38b3d86d568da",
+  "publication_method": "Established static GitHub Pages main/root; scoped ordinary fast-forward publication",
+  "published_UTC": "2026-10-11T21:23:51.453409+00:00",
+  "English_exact_sections": 3821,
+  "English_exact_books": [
+    "Proem",
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "contextual_English_books": [
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "BookIX_restored_sections": [
+    51,
+    109
+  ],
+  "BookIX_Greek_Latin_omissions_preserved": true,
+  "BookXI_physical_order_ranges": [
+    [
+      1,
+      311
+    ],
+    [
+      326,
+      342
+    ],
+    [
+      312,
+      325
+    ],
+    [
+      343,
+      347
+    ]
+  ],
+  "resources": [
+    {
+      "path": "assets/css/tei.css",
+      "sha256": "836b75125679f640e70a1eca018364cba12e427299ccae070f12bb7f1ba33de6",
+      "bytes": 5074,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "certified source/runtime"
+    },
+    {
+      "path": "assets/js/renderTei.js",
+      "sha256": "967b3eaba49c7afd622b6f66f095d5eb0a4ef77617f7adfae5ef846db2f5b5ee",
+      "bytes": 144226,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "certified source/runtime"
+    },
+    {
+      "path": "assets/xml/antiquities/English/book-01.xml",
+      "sha256": "9cd8daf04bddfd94cd96f077c0b9336135c35d017fad029a56fd08e1fc2363f3",
+      "bytes": 133661,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "certified source/runtime"
+    },
+    {
+      "path": "assets/xml/antiquities/English/book-02.xml",
+      "sha256": "70da231aafb85aecfec0510bc7489441ca8263b45e31dd33f3ed2f20237aa584",
+      "bytes": 146559,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "certified source/runtime"
+    },
+    {
+      "path": "assets/xml/antiquities/English/book-03.xml",
+      "sha256": "0c663f9776a1249d85ceab2ad0bfa47dc3b537864598f4855a668e23e642df44",
+      "bytes": 135350,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "certified source/runtime"
+    },
+    {
+      "path": "assets/xml/antiquities/English/book-04.xml",
+      "sha256": "6d58dfa865b47e1a1f347f8f322f578381e6f8a407c597e2f36ae3bd120c6554",
+      "bytes": 144281,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "certified source/runtime"
+    },
+    {
+      "path": "assets/xml/antiquities/English/book-05.xml",
+      "sha256": "a8ab9d6b66e6d4a768f3fc247240d6423d5d9687a3f1026f327f9ea387560722",
+      "bytes": 152617,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "certified source/runtime"
+    },
+    {
+      "path": "assets/xml/antiquities/English/book-06.xml",
+      "sha256": "116338d9f8a424bfb2ec63af5531b3c72941708ae00e7f327ba8909dc1e125eb",
+      "bytes": 175282,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "certified source/runtime"
+    },
+    {
+      "path": "assets/xml/antiquities/English/book-07.xml",
+      "sha256": "d8109c20ceca61283dd5150bf2059f3cffda924f5f82625a4e6b1073b4c60eb3",
+      "bytes": 175083,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "certified source/runtime"
+    },
+    {
+      "path": "assets/xml/antiquities/English/book-08.xml",
+      "sha256": "609cedd3dbab1f7af831877f2aea820781e2b34b6c998ab41b3ffa6cb0fb8289",
+      "bytes": 187016,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "certified source/runtime"
+    },
+    {
+      "path": "assets/xml/antiquities/English/book-09.xml",
+      "sha256": "d973618661bacf96f0a7ea81f1d7e44147f7826ff1d247908467b238263edc36",
+      "bytes": 123475,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "certified source/runtime"
+    },
+    {
+      "path": "assets/xml/antiquities/English/book-10.xml",
+      "sha256": "7f4fde2921f8c5fc670d688174f5c67f81eed7c264c63af89b6c7adb0725e7eb",
+      "bytes": 112960,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "certified source/runtime"
+    },
+    {
+      "path": "assets/xml/antiquities/English/book-11.xml",
+      "sha256": "0bdcc522c1f227dab7a61b19a4bef09a590af2bf25cbdce581277469c082acb2",
+      "bytes": 127260,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "certified source/runtime"
+    },
+    {
+      "path": "assets/xml/antiquities/English/preface.xml",
+      "sha256": "d04712a2db72f2d2c39e175591b866308f93cb15d10f4ee3be70401f7dd614eb",
+      "bytes": 10799,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "certified source/runtime"
+    },
+    {
+      "path": "assets/xml/antiquities/niese/book-09.json",
+      "sha256": "5dbc75c63fc0afc59fa4d59768e54ad197d716f2ed55f36a0669b3f375412b64",
+      "bytes": 103282,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "certified source/runtime"
+    },
+    {
+      "path": "assets/xml/antiquities/structure.xml",
+      "sha256": "82dcc4bdc0215c83a8b0505160cae32224e2bfd081473e6041dc68a3067748bd",
+      "bytes": 19347138,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "certified source/runtime"
+    },
+    {
+      "path": "antiquities/index.html",
+      "sha256": "fba6f213fe1033988355ae7a1c08fab775452e7ba3a7601e431fa4cd1651731e",
+      "bytes": 16716,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "existing reader shell; only renderTei/tei.css cache version changed"
+    },
+    {
+      "path": "bellum-judaicum/index.html",
+      "sha256": "3c39d169885c12f4185266b414fa36dd8220d56171ff22b9d49dfe0222a5e64c",
+      "bytes": 15735,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "existing reader shell; only renderTei/tei.css cache version changed"
+    },
+    {
+      "path": "contra-apionem/index.html",
+      "sha256": "db4ddf14b1323aee00949bcac0fadb4a632d684517ee5968dfbc1d4230bd842f",
+      "bytes": 15733,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "existing reader shell; only renderTei/tei.css cache version changed"
+    },
+    {
+      "path": "deh/index.html",
+      "sha256": "07997fd0f467f299edad5496fc89640e4f7ceb0d4104fecd1bc7a4002a533963",
+      "bytes": 18309,
+      "canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+      "role": "existing reader shell; only renderTei/tei.css cache version changed"
+    }
+  ],
+  "source_authorities": [
+    {
+      "book": "I",
+      "delivery_commit": "b8cf6c9d36db610ea1dc4c65d070b016048262e1",
+      "XML": [
+        {
+          "path": "assets/xml/antiquities/English/preface.xml",
+          "sha256": "d04712a2db72f2d2c39e175591b866308f93cb15d10f4ee3be70401f7dd614eb"
+        },
+        {
+          "path": "assets/xml/antiquities/English/book-01.xml",
+          "sha256": "9cd8daf04bddfd94cd96f077c0b9336135c35d017fad029a56fd08e1fc2363f3"
+        }
+      ]
+    },
+    {
+      "book": "II",
+      "delivery_commit": "3919acbd19d4ad32ef0daa0ec4ff2fbcda9b7e2f",
+      "XML": [
+        {
+          "path": "assets/xml/antiquities/English/book-02.xml",
+          "sha256": "70da231aafb85aecfec0510bc7489441ca8263b45e31dd33f3ed2f20237aa584"
+        }
+      ]
+    },
+    {
+      "book": "III",
+      "delivery_commit": "671cca7911745be51a7c2cc58ee9f96c404e04bd",
+      "XML": [
+        {
+          "path": "assets/xml/antiquities/English/book-03.xml",
+          "sha256": "0c663f9776a1249d85ceab2ad0bfa47dc3b537864598f4855a668e23e642df44"
+        }
+      ]
+    },
+    {
+      "book": "IV",
+      "delivery_commit": "02bec3048a5b397b93da0c10043394401ab6c8e8",
+      "XML": [
+        {
+          "path": "assets/xml/antiquities/English/book-04.xml",
+          "sha256": "6d58dfa865b47e1a1f347f8f322f578381e6f8a407c597e2f36ae3bd120c6554"
+        }
+      ]
+    },
+    {
+      "book": "V",
+      "delivery_commit": "26d7d3edecd643d92596c03c7ff319df65cd19c2",
+      "XML": [
+        {
+          "path": "assets/xml/antiquities/English/book-05.xml",
+          "sha256": "a8ab9d6b66e6d4a768f3fc247240d6423d5d9687a3f1026f327f9ea387560722"
+        }
+      ]
+    },
+    {
+      "book": "VI",
+      "delivery_commit": "97e416fbc0fd195143f73d7b10f42d2f4987cea4",
+      "XML": [
+        {
+          "path": "assets/xml/antiquities/English/book-06.xml",
+          "sha256": "116338d9f8a424bfb2ec63af5531b3c72941708ae00e7f327ba8909dc1e125eb"
+        }
+      ]
+    },
+    {
+      "book": "VII",
+      "delivery_commit": "8071050ce985a0ff69f59437ce618137c9ac192c",
+      "XML": [
+        {
+          "path": "assets/xml/antiquities/English/book-07.xml",
+          "sha256": "d8109c20ceca61283dd5150bf2059f3cffda924f5f82625a4e6b1073b4c60eb3"
+        }
+      ]
+    },
+    {
+      "book": "VIII",
+      "delivery_commit": "74b8cf1b3505430ff60984d0779e7275da852e59",
+      "XML": [
+        {
+          "path": "assets/xml/antiquities/English/book-08.xml",
+          "sha256": "609cedd3dbab1f7af831877f2aea820781e2b34b6c998ab41b3ffa6cb0fb8289"
+        }
+      ]
+    },
+    {
+      "book": "IX",
+      "delivery_commit": "2ce18b40ea8652e5e0d5046f10b1c39935fcdc54",
+      "XML": [
+        {
+          "path": "assets/xml/antiquities/English/book-09.xml",
+          "sha256": "d973618661bacf96f0a7ea81f1d7e44147f7826ff1d247908467b238263edc36"
+        }
+      ]
+    },
+    {
+      "book": "X",
+      "delivery_commit": "8cb48664e3ec3994416d9dd9d769e0e3f41132ac",
+      "XML": [
+        {
+          "path": "assets/xml/antiquities/English/book-10.xml",
+          "sha256": "7f4fde2921f8c5fc670d688174f5c67f81eed7c264c63af89b6c7adb0725e7eb"
+        }
+      ]
+    },
+    {
+      "book": "XI",
+      "delivery_commit": "5c5557fc6970012251fdca083795d966c7015cfe",
+      "XML": [
+        {
+          "path": "assets/xml/antiquities/English/book-11.xml",
+          "sha256": "0bdcc522c1f227dab7a61b19a4bef09a590af2bf25cbdce581277469c082acb2"
+        }
+      ]
+    }
+  ],
+  "qualifications": [
+    "Book I Greek I.272 editorial/control qualification remains open; no Greek emendation.",
+    "Book I segmentation certifies surviving project transcription; inherited losses and apparatus hold remain.",
+    "Restored IX English retains its distinct printed-source and provenance notices."
+  ],
+  "unrelated_content_and_XII_XX_sources_unchanged": true
+}

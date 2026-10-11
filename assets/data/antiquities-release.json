@@ -1,7 +1,7 @@
 {
   "release": "Antiquities Niese Proem and Books I-XX",
-  "frozen_canonical_commit": "663b8ce318f0aa247d304d8eeda5b8e76e7489c6",
-  "preview_parent_commit": "afea19c25456c4476c37e4ce7164a2b8ed3b61c8",
+  "frozen_canonical_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+  "preview_parent_commit": "3e5649651c2f9c291b9e7c6630e38b3d86d568da",
   "certified_identities": 7376,
   "proem_identities": 26,
   "books_I_XX_identities": 7350,
@@ -9,12 +9,72 @@
     {
       "canonical_path": "assets/css/tei.css",
       "preview_path": "assets/css/tei.css",
-      "sha256": "7df2b7e0267ef23d812590e57feb79390beb5b95daf30949ae0dd5027146d4a7"
+      "sha256": "836b75125679f640e70a1eca018364cba12e427299ccae070f12bb7f1ba33de6"
     },
     {
       "canonical_path": "assets/js/renderTei.js",
       "preview_path": "assets/js/renderTei.js",
-      "sha256": "e75244c444771c733ca8ddb0d130b8f32463f59fd9460c26a5048b3669727322"
+      "sha256": "967b3eaba49c7afd622b6f66f095d5eb0a4ef77617f7adfae5ef846db2f5b5ee"
+    },
+    {
+      "canonical_path": "assets/xml/antiquities/English/book-01.xml",
+      "preview_path": "assets/xml/antiquities/English/book-01.xml",
+      "sha256": "9cd8daf04bddfd94cd96f077c0b9336135c35d017fad029a56fd08e1fc2363f3"
+    },
+    {
+      "canonical_path": "assets/xml/antiquities/English/book-02.xml",
+      "preview_path": "assets/xml/antiquities/English/book-02.xml",
+      "sha256": "70da231aafb85aecfec0510bc7489441ca8263b45e31dd33f3ed2f20237aa584"
+    },
+    {
+      "canonical_path": "assets/xml/antiquities/English/book-03.xml",
+      "preview_path": "assets/xml/antiquities/English/book-03.xml",
+      "sha256": "0c663f9776a1249d85ceab2ad0bfa47dc3b537864598f4855a668e23e642df44"
+    },
+    {
+      "canonical_path": "assets/xml/antiquities/English/book-04.xml",
+      "preview_path": "assets/xml/antiquities/English/book-04.xml",
+      "sha256": "6d58dfa865b47e1a1f347f8f322f578381e6f8a407c597e2f36ae3bd120c6554"
+    },
+    {
+      "canonical_path": "assets/xml/antiquities/English/book-05.xml",
+      "preview_path": "assets/xml/antiquities/English/book-05.xml",
+      "sha256": "a8ab9d6b66e6d4a768f3fc247240d6423d5d9687a3f1026f327f9ea387560722"
+    },
+    {
+      "canonical_path": "assets/xml/antiquities/English/book-06.xml",
+      "preview_path": "assets/xml/antiquities/English/book-06.xml",
+      "sha256": "116338d9f8a424bfb2ec63af5531b3c72941708ae00e7f327ba8909dc1e125eb"
+    },
+    {
+      "canonical_path": "assets/xml/antiquities/English/book-07.xml",
+      "preview_path": "assets/xml/antiquities/English/book-07.xml",
+      "sha256": "d8109c20ceca61283dd5150bf2059f3cffda924f5f82625a4e6b1073b4c60eb3"
+    },
+    {
+      "canonical_path": "assets/xml/antiquities/English/book-08.xml",
+      "preview_path": "assets/xml/antiquities/English/book-08.xml",
+      "sha256": "609cedd3dbab1f7af831877f2aea820781e2b34b6c998ab41b3ffa6cb0fb8289"
+    },
+    {
+      "canonical_path": "assets/xml/antiquities/English/book-09.xml",
+      "preview_path": "assets/xml/antiquities/English/book-09.xml",
+      "sha256": "d973618661bacf96f0a7ea81f1d7e44147f7826ff1d247908467b238263edc36"
+    },
+    {
+      "canonical_path": "assets/xml/antiquities/English/book-10.xml",
+      "preview_path": "assets/xml/antiquities/English/book-10.xml",
+      "sha256": "7f4fde2921f8c5fc670d688174f5c67f81eed7c264c63af89b6c7adb0725e7eb"
+    },
+    {
+      "canonical_path": "assets/xml/antiquities/English/book-11.xml",
+      "preview_path": "assets/xml/antiquities/English/book-11.xml",
+      "sha256": "0bdcc522c1f227dab7a61b19a4bef09a590af2bf25cbdce581277469c082acb2"
+    },
+    {
+      "canonical_path": "assets/xml/antiquities/English/preface.xml",
+      "preview_path": "assets/xml/antiquities/English/preface.xml",
+      "sha256": "d04712a2db72f2d2c39e175591b866308f93cb15d10f4ee3be70401f7dd614eb"
     },
     {
       "canonical_path": "assets/xml/antiquities/Greek/book-16.xml",
@@ -67,6 +127,11 @@
       "sha256": "e0588da38fe3d3e9f69735a79b204556906b1377cf8e4cf8b7ec3ce396789015"
     },
     {
+      "canonical_path": "assets/xml/antiquities/niese/book-09.json",
+      "preview_path": "assets/xml/antiquities/niese/book-09.json",
+      "sha256": "5dbc75c63fc0afc59fa4d59768e54ad197d716f2ed55f36a0669b3f375412b64"
+    },
+    {
       "canonical_path": "assets/xml/antiquities/niese/book-11.json",
       "preview_path": "assets/xml/antiquities/niese/book-11.json",
       "sha256": "b89420a9520192d592d9166eb5cc340b1d1dd13e68b7641514be6e9dd36fc309"
@@ -100,33 +165,47 @@
       "canonical_path": "assets/xml/antiquities/niese/preface.json",
       "preview_path": "assets/xml/antiquities/niese/preface.json",
       "sha256": "0a0e46771df523aad8a3dad9e696ec51bbe5cd9da084ec81eed0a20aeb6b2e18"
+    },
+    {
+      "canonical_path": "assets/xml/antiquities/structure.xml",
+      "preview_path": "assets/xml/antiquities/structure.xml",
+      "sha256": "82dcc4bdc0215c83a8b0505160cae32224e2bfd081473e6041dc68a3067748bd"
     }
   ],
   "preview_url": "https://latinjosephus.github.io/",
-  "generated_utc": "2026-10-11T17:06:06.689956+00:00",
-  "previous_canonical_commit": "4ffbc79b84806d180e9d713f9605255e7dfed73e",
-  "repair": "Reader maintenance A/B/D/E: accessible theme button; unique annotations UI; safe general-page initialization; registry-based invalid Niese notices. No scholarly text, XML or Niese boundary change.",
+  "generated_utc": "2026-10-11T21:23:51.453409+00:00",
+  "previous_canonical_commit": "663b8ce318f0aa247d304d8eeda5b8e76e7489c6",
+  "repair": "Certified Whiston Proem/I–XI exact English rendering, restored independent IX English availability and source-backed registry locators. Existing reader repairs and editorial holds retained.",
   "publication_delta": [
-    "404.html",
-    "_pages/dropdown/index.html",
-    "about/index.html",
     "antiquities/index.html",
-    "assets/css/main.css",
-    "assets/css/main.css.map",
+    "assets/css/tei.css",
     "assets/data/antiquities-release.json",
-    "assets/js/dark_mode.js",
+    "assets/data/whiston-i-xi-publication.json",
     "assets/js/renderTei.js",
-    "assets/js/theme.js",
-    "background/index.html",
+    "assets/xml/antiquities/English/book-01.xml",
+    "assets/xml/antiquities/English/book-02.xml",
+    "assets/xml/antiquities/English/book-03.xml",
+    "assets/xml/antiquities/English/book-04.xml",
+    "assets/xml/antiquities/English/book-05.xml",
+    "assets/xml/antiquities/English/book-06.xml",
+    "assets/xml/antiquities/English/book-07.xml",
+    "assets/xml/antiquities/English/book-08.xml",
+    "assets/xml/antiquities/English/book-09.xml",
+    "assets/xml/antiquities/English/book-10.xml",
+    "assets/xml/antiquities/English/book-11.xml",
+    "assets/xml/antiquities/English/preface.xml",
+    "assets/xml/antiquities/niese/book-09.json",
+    "assets/xml/antiquities/structure.xml",
     "bellum-judaicum/index.html",
     "contra-apionem/index.html",
-    "deh/index.html",
-    "index.html"
+    "deh/index.html"
   ],
-  "English_policy": "Existing qualified contextual Whiston paragraphs, including certified VII.1–6; no precise English Niese segmentation or new public range control",
+  "English_policy": "Exact preserved English Niese intervals for Proem/I–XI (3821); inherited qualified contextual English for XII–XX. Greek/Latin omissions remain independent.",
   "known_unresolved": [
     "Package C: three original Book-I apparatus references, two distinct unresolved 404 destinations; explicit editorial HOLD, unchanged.",
-    "Inherited Bellum Book-I source-source header DOM ID collision, unchanged."
+    "Inherited Bellum Book-I source-source header DOM ID collision, unchanged.",
+    "Book I Greek I.272 remains a Greek editorial/control hold; English certification does not authorize emendation.",
+    "Book I inherited transcription differences and completeness limits remain unchanged."
   ],
   "maintenance_files": [
     {
@@ -143,7 +222,7 @@
     },
     {
       "path": "antiquities/index.html",
-      "sha256": "412b3bd905b2f1b13750b3dbe84ef153610531becef81e9eb2ddedea2e932bde"
+      "sha256": "fba6f213fe1033988355ae7a1c08fab775452e7ba3a7601e431fa4cd1651731e"
     },
     {
       "path": "assets/css/main.css",
@@ -159,7 +238,7 @@
     },
     {
       "path": "assets/js/renderTei.js",
-      "sha256": "e75244c444771c733ca8ddb0d130b8f32463f59fd9460c26a5048b3669727322"
+      "sha256": "967b3eaba49c7afd622b6f66f095d5eb0a4ef77617f7adfae5ef846db2f5b5ee"
     },
     {
       "path": "assets/js/theme.js",
@@ -171,19 +250,21 @@
     },
     {
       "path": "bellum-judaicum/index.html",
-      "sha256": "e261b93f035f74c8b46b622b2741cf5c544777c8b4c5727367f5d2baaded2f66"
+      "sha256": "3c39d169885c12f4185266b414fa36dd8220d56171ff22b9d49dfe0222a5e64c"
     },
     {
       "path": "contra-apionem/index.html",
-      "sha256": "5203bd915374e305621e8caf2d93229abf5cb473c4fc3a144fe575333f6c23de"
+      "sha256": "db4ddf14b1323aee00949bcac0fadb4a632d684517ee5968dfbc1d4230bd842f"
     },
     {
       "path": "deh/index.html",
-      "sha256": "ea0d0e24ae4c8d89d58d2be6bf4e1932a11412cc3ac239fd2d8a024f8ce74af6"
+      "sha256": "07997fd0f467f299edad5496fc89640e4f7ceb0d4104fecd1bc7a4002a533963"
     },
     {
       "path": "index.html",
       "sha256": "c802f4f52f7d6e27418122b383456efc4cfeebd321c50eefb1c65f4ed3d1e801"
     }
-  ]
+  ],
+  "previous_repair": "Reader maintenance A/B/D/E: accessible theme button; unique annotations UI; safe general-page initialization; registry-based invalid Niese notices. No scholarly text, XML or Niese boundary change.",
+  "Whiston_publication_manifest": "assets/data/whiston-i-xi-publication.json"
 }
