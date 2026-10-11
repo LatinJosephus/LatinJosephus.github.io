@@ -1,7 +1,7 @@
 {
   "release": "Antiquities Niese Proem and Books I-XX",
-  "frozen_canonical_commit": "4ffbc79b84806d180e9d713f9605255e7dfed73e",
-  "preview_parent_commit": "e846e84bc0cd9392b504f5a60f43870084e85403",
+  "frozen_canonical_commit": "663b8ce318f0aa247d304d8eeda5b8e76e7489c6",
+  "preview_parent_commit": "afea19c25456c4476c37e4ce7164a2b8ed3b61c8",
   "certified_identities": 7376,
   "proem_identities": 26,
   "books_I_XX_identities": 7350,
@@ -14,7 +14,7 @@
     {
       "canonical_path": "assets/js/renderTei.js",
       "preview_path": "assets/js/renderTei.js",
-      "sha256": "c4741903c21c4cc0e4629cdca4d951a5c64ffcab6da5e44e40aaaebcc0e3cad3"
+      "sha256": "e75244c444771c733ca8ddb0d130b8f32463f59fd9460c26a5048b3669727322"
     },
     {
       "canonical_path": "assets/xml/antiquities/Greek/book-16.xml",
@@ -103,12 +103,87 @@
     }
   ],
   "preview_url": "https://latinjosephus.github.io/",
-  "generated_utc": "2026-10-11T12:18:25.853842+00:00",
-  "previous_canonical_commit": "cf4cdb90e5fbcefbd0f2606d551d6a05100fd545",
-  "repair": "Whiston contextual English recovery VII.1–6; no scholarly XML or Niese boundary changes",
+  "generated_utc": "2026-10-11T17:06:06.689956+00:00",
+  "previous_canonical_commit": "4ffbc79b84806d180e9d713f9605255e7dfed73e",
+  "repair": "Reader maintenance A/B/D/E: accessible theme button; unique annotations UI; safe general-page initialization; registry-based invalid Niese notices. No scholarly text, XML or Niese boundary change.",
   "publication_delta": [
+    "404.html",
+    "_pages/dropdown/index.html",
+    "about/index.html",
+    "antiquities/index.html",
+    "assets/css/main.css",
+    "assets/css/main.css.map",
+    "assets/data/antiquities-release.json",
+    "assets/js/dark_mode.js",
     "assets/js/renderTei.js",
-    "assets/data/antiquities-release.json"
+    "assets/js/theme.js",
+    "background/index.html",
+    "bellum-judaicum/index.html",
+    "contra-apionem/index.html",
+    "deh/index.html",
+    "index.html"
   ],
-  "English_policy": "Contextual Whiston paragraphs; no precise English Niese segmentation or public range control"
+  "English_policy": "Existing qualified contextual Whiston paragraphs, including certified VII.1–6; no precise English Niese segmentation or new public range control",
+  "known_unresolved": [
+    "Package C: three original Book-I apparatus references, two distinct unresolved 404 destinations; explicit editorial HOLD, unchanged.",
+    "Inherited Bellum Book-I source-source header DOM ID collision, unchanged."
+  ],
+  "maintenance_files": [
+    {
+      "path": "404.html",
+      "sha256": "097969f0336ebb3f54119c44d27e9d491fe2fd7d471af6f89242bfed3efcf168"
+    },
+    {
+      "path": "_pages/dropdown/index.html",
+      "sha256": "2a9a080d53161729c75518df1f967d61e2b6295baaa77c5289053e9cf9420625"
+    },
+    {
+      "path": "about/index.html",
+      "sha256": "889cc73878278c0f3e4ea4e97ff6a390c1608f2879da90696b3c1fab230b972d"
+    },
+    {
+      "path": "antiquities/index.html",
+      "sha256": "412b3bd905b2f1b13750b3dbe84ef153610531becef81e9eb2ddedea2e932bde"
+    },
+    {
+      "path": "assets/css/main.css",
+      "sha256": "0166b79047eac3734b29238ebc715314aa2a99d804f5d6a39bfa17e484c4e339"
+    },
+    {
+      "path": "assets/css/main.css.map",
+      "sha256": "884e3fd14d9509e35987d66e9895dcd5714c3bacaa282a4e60735bc824fa991c"
+    },
+    {
+      "path": "assets/js/dark_mode.js",
+      "sha256": "7f8cb70ed5198033a0c0daa938d7e8dcc044776eb5137d4098e0661ebc889b86"
+    },
+    {
+      "path": "assets/js/renderTei.js",
+      "sha256": "e75244c444771c733ca8ddb0d130b8f32463f59fd9460c26a5048b3669727322"
+    },
+    {
+      "path": "assets/js/theme.js",
+      "sha256": "281771146ce240bdf69520decbac713d2aefbf8a1b23e58ca6444bc49c12e982"
+    },
+    {
+      "path": "background/index.html",
+      "sha256": "7aa9a644ebf600d4a4663552774f32756b196eb61ce9728f5b77b2588bcf0288"
+    },
+    {
+      "path": "bellum-judaicum/index.html",
+      "sha256": "e261b93f035f74c8b46b622b2741cf5c544777c8b4c5727367f5d2baaded2f66"
+    },
+    {
+      "path": "contra-apionem/index.html",
+      "sha256": "5203bd915374e305621e8caf2d93229abf5cb473c4fc3a144fe575333f6c23de"
+    },
+    {
+      "path": "deh/index.html",
+      "sha256": "ea0d0e24ae4c8d89d58d2be6bf4e1932a11412cc3ac239fd2d8a024f8ce74af6"
+    },
+    {
+      "path": "index.html",
+      "sha256": "c802f4f52f7d6e27418122b383456efc4cfeebd321c50eefb1c65f4ed3d1e801"
+    }
+  ]
 }

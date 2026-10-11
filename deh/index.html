@@ -161,10 +161,10 @@
           
           
             <div class="toggle-container">
-              <a id="light-toggle">
-                  <i class="fas fa-moon"></i>
-                  <i class="fas fa-sun"></i>
-              </a>
+              <button id="light-toggle" type="button" aria-label="Dark mode" aria-pressed="false">
+                  <i class="fas fa-moon" aria-hidden="true"></i>
+                  <i class="fas fa-sun" aria-hidden="true"></i>
+              </button>
             </div>
           
         </ul>
@@ -394,14 +394,14 @@
       <div id="greek" class="pane">
         <h3>Greek</h3>
       </div>
-      <div class="accordion card fixed-bottom" id="annotations">
+      <div class="accordion card fixed-bottom" id="reader-annotations">
   <div class="accordion-item">
     <h3 class="accordion-header" id="annotations-header">
       <button class="accordion-button" type="button" data-mdb-toggle="collapse" data-mdb-target="#collapse-annotations" aria-expanded="false" aria-controls="collapse-annotations">
         Annotations
       </button>
     </h3>
-    <div id="collapse-annotations" class="accordion-collapse collapse" aria-labelledby="annotations-header" data-mdb-parent="#annotations">
+    <div id="collapse-annotations" class="accordion-collapse collapse" aria-labelledby="annotations-header" data-mdb-parent="#reader-annotations">
       <div id="annotations-list" class="accordion-body">
 
       </div>
