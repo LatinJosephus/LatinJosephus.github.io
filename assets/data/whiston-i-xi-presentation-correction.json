@@ -1,0 +1,35 @@
+{
+  "receipt": "Whiston Antiquities I-XI minor presentation correction",
+  "UTC": "2026-10-12T01:09:39.136756+00:00",
+  "canonical_correction_commit": "43c3626493daa6768f9fc818679214035a62a281",
+  "certified_source_commit": "0a184e2a99f1fd44e58d83596d68009c42a84790",
+  "prior_certified_preview_commit": "21bd0faa692a6a7ec510f2b74537dcad8603bfab",
+  "prior_public_certificate_preserved": true,
+  "change": "Remove redundant exact-English announcement at its renderer source. English heading, citations, translation and genuine qualifications are unchanged.",
+  "renderer_sha256": "71d15c49dd71bc29e844ce0346aefb820da80b8d3ecf679176647a946d969fa1",
+  "cache_version": "whiston-notice-43c3626",
+  "published_resources": {
+    "assets/js/renderTei.js": {
+      "sha256": "71d15c49dd71bc29e844ce0346aefb820da80b8d3ecf679176647a946d969fa1",
+      "bytes": 144001
+    },
+    "antiquities/index.html": {
+      "sha256": "4480f3d3f082ac9a42f7738c63938440d1242e29b8c6cf3f19bb5e0c7f97b9cc",
+      "bytes": 16718
+    },
+    "bellum-judaicum/index.html": {
+      "sha256": "208dd6bddec7c9c658c2fc63bc54f8d572bf44982ea56f379d5c3971ffb923a8",
+      "bytes": 15737
+    },
+    "contra-apionem/index.html": {
+      "sha256": "457205b9b5ebf37b96c1cb8496108c3d231554a73d68df72d14b09995500c3e4",
+      "bytes": 15735
+    },
+    "deh/index.html": {
+      "sha256": "c0a602ef9421d20221b0cb83453f441af78568ddd48ec804c4202afae6ad00fe",
+      "bytes": 18311
+    }
+  },
+  "source_XML_changes": [],
+  "local_QA_receipt": "3821 exact intervals; 967 traditional; 823 alignment; 198 Bamberg; 12 whole sources; cross-work and fallback regressions; complete configured build and preserved guards PASS. Hosted certification is issued separately after actual HTTP/browser checks."
+}
