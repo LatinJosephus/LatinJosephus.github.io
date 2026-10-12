@@ -1,0 +1,69 @@
+{
+  "canonical_source_commit": "f6fa17f7616bf9ce046c28086b1a1448a9f8d049",
+  "previous_preview_commit": "ddbba537cd489825e5aaab0619f2f8d73aec4780",
+  "scope": "Certified Whiston Antiquities XII–XV activation only",
+  "exact_books": [
+    "preface",
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "exact_intervals": 5604,
+  "new_intervals": 1783,
+  "certified_local_recovery_SHA256": "5993eea592d26e1480d87272e94d79dba70fee0e7105027f4086d1c71a9386f1",
+  "cache_version": "whiston-i-xv-f6fa17f",
+  "notice_removal_preserved": true,
+  "XVI_XX_contextual_fallback_preserved": true,
+  "UTC": "2026-10-12T15:55:27.835363+00:00",
+  "published_resources": {
+    "assets/xml/antiquities/English/book-12.xml": {
+      "sha256": "e28ce3914fe0e764571e049b20b5ddabfc6d3080cf6dd4537522b083be7cc83c",
+      "bytes": 158411
+    },
+    "assets/xml/antiquities/English/book-13.xml": {
+      "sha256": "01ff55a3e01bd82c6590ef8bbfa30c05a22a8ebc292086b10095011b552f91a9",
+      "bytes": 164308
+    },
+    "assets/xml/antiquities/English/book-14.xml": {
+      "sha256": "9f5ffef649c2922e54402ca7ab09795307fe0595c68d47754df8aefe47464ed1",
+      "bytes": 188990
+    },
+    "assets/xml/antiquities/English/book-15.xml": {
+      "sha256": "223b08bd399b58dd6da5929a5cbffacb31f461ee11d4d6dd4aa45b498283d579",
+      "bytes": 168598
+    },
+    "assets/js/renderTei.js": {
+      "sha256": "146bec171482130f302f06cdc156e9c23297b1f700ca86c6eb24ae302c14a31b",
+      "bytes": 144017
+    },
+    "antiquities/index.html": {
+      "sha256": "7fd7f0d1fad3a15a0617cfcb0d0a1651f761ced4c897311a6217bbfd02477bb5",
+      "bytes": 16716
+    },
+    "bellum-judaicum/index.html": {
+      "sha256": "3b600153f666271ca0f259b43f724344d66d64a10fde88f4b80c2ec7a17ca76f",
+      "bytes": 15735
+    },
+    "contra-apionem/index.html": {
+      "sha256": "0b2caed06a624969804586aeaa36d97f044f8f4d95e1c427b58256a88626da45",
+      "bytes": 15733
+    },
+    "deh/index.html": {
+      "sha256": "34f58a612792918dcb3a97ffd478b36235cc6d81af1c3ae8def2b245b3b26077",
+      "bytes": 18309
+    }
+  },
+  "certification": "Local certification passed. Independent hosted certification is issued separately after actual HTTPS/native-browser verification."
+}
