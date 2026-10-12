@@ -1,0 +1,77 @@
+{
+  "canonical_source_commit": "0cec37dce62153af14c550cc97aa01912b2f56a9",
+  "previous_preview_commit": "ef1eb6d6c35934fb09da3ff9602af665554596ad",
+  "scope": "Complete certified Whiston Antiquities; XVI–XX exact English activation only",
+  "exact_books": [
+    "preface",
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "exact_intervals": 7376,
+  "new_intervals": 1772,
+  "certified_local_recovery_SHA256": "50d17e769ae5a3d16472dbdc6ea17b4a3841185b254c88ba6a64368d3e6277dc",
+  "cache_version": "whiston-i-xx-0cec37d",
+  "notice_removal_preserved": true,
+  "UTC": "2026-10-12T18:52:40.450231+00:00",
+  "published_resources": {
+    "assets/xml/antiquities/English/book-16.xml": {
+      "sha256": "df3138bdceadb36ad8295445b37e7aa741c48f1d145f97b9073d6d53976991f8",
+      "bytes": 151002
+    },
+    "assets/xml/antiquities/English/book-17.xml": {
+      "sha256": "29a0a40375396016162920b32462f259cf3791fa6a12b4af1f6d2ed7bd41cca1",
+      "bytes": 148192
+    },
+    "assets/xml/antiquities/English/book-18.xml": {
+      "sha256": "db6c960c3d27457e21b4f5cccdf5a389f6d9ecdfd927a53d1379484eeef3c67d",
+      "bytes": 150720
+    },
+    "assets/xml/antiquities/English/book-19.xml": {
+      "sha256": "9ce4e6116a0cbd57823e07cff97559941e9015da79d02dd0ae6b2e9c0877e129",
+      "bytes": 136009
+    },
+    "assets/xml/antiquities/English/book-20.xml": {
+      "sha256": "229c2c47f9c4f6ad19ae3b96aeb8c9fcdbe849bb4a733cf214ad0f133d28bc0e",
+      "bytes": 94225
+    },
+    "assets/js/renderTei.js": {
+      "sha256": "d9bfa52692e7fc5d639774412f3a7d5a6e98a99e16beb0e27feedfc2cb2d9a85",
+      "bytes": 144037
+    },
+    "antiquities/index.html": {
+      "sha256": "cee8085c2309e82bf5407edef98bc82066f1d89e0084ae6396e5a9c8ed6729f1",
+      "bytes": 16716
+    },
+    "bellum-judaicum/index.html": {
+      "sha256": "334793c418e6ad72b933beeaa7870d757e5504406ba49b21a5e53f2724a62688",
+      "bytes": 15735
+    },
+    "contra-apionem/index.html": {
+      "sha256": "112d76f67194c6f9396346751786ff62ff56e7caa0ef69445cfae58e49f6fced",
+      "bytes": 15733
+    },
+    "deh/index.html": {
+      "sha256": "6bf53108ff9406848ef1c2feaeeaeb72a30b06f035edc085959bdd42dbb3d736",
+      "bytes": 18309
+    }
+  },
+  "certification": "Canonical certification passed. Fresh independent actual hosted certification follows publication."
+}
