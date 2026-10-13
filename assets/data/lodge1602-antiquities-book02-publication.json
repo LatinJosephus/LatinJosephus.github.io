@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "source_commit": "187729ce5c77e03819a85c8f71c84cd1dffbe59c",
+  "source_tree": "1686ffef02e2d1907c9485739ab582861d997a8b",
+  "preview_base": "5d26c46fea3bb9856caf0b37c9cd33dbe56ee76b",
+  "source": "Thomas Lodge, 1602, EEBO-TCP A04680",
+  "work": "Antiquities",
+  "book": 2,
+  "niese": [
+    1,
+    349
+  ],
+  "XML_SHA256": "69ed805eb0585ec8b93f4d330a2c69c52f5fb5aae72d583fcd8e180eade5d729",
+  "metadata_SHA256": "1c6707c92e74b7885b0434d2f0e5d13abab49617cbfcaaba085a0165f9bd86e8",
+  "integration": "Certified production derivative; source-native chapters and marginal notes retained",
+  "source_licence": "CC0 1.0 applies to the underlying TCP transcription",
+  "other_Lodge_Antiquities_books_integrated": false
+}
