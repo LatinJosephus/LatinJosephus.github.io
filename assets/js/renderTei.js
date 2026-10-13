@@ -1291,7 +1291,9 @@ document.addEventListener("DOMContentLoaded", () => {
     wrapper.dataset.englishSegmentation = exact ? "exact" : "containing-context";
     wrapper.appendChild(content);
     const label = makeGeneratedNieseLabel(first);
-    wrapper.prepend(label);
+    // Keep the display citation in the opening source paragraph, as in Latin.
+    const firstParagraph = wrapper.querySelector("tei-p");
+    (firstParagraph || wrapper).prepend(label);
     if (exact && first === lodgeMetadata.availability.identity_range[0]) {
       const context = document.createElement("aside"); context.className = "lodge-source-context";
       const title = document.createElement("p"); title.textContent = "Lodge source note preceding section 1";
