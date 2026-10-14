@@ -1,9 +1,9 @@
 {
   "schema": 1,
   "status": "SOURCE_AND_READER_CERTIFIED",
-  "source_commit": "0026ebd162c28de3c0005fbb1e39d0a29c2b7296",
-  "source_tree": "9419f882232e89c3a724df115ef3e10162c8575b",
-  "preview_base": "75ed6cddde0a1e1633997bd48d6b38d1eadd9526",
+  "source_commit": "950be5927605f0fd4bfbe778c028dce2b8118d0c",
+  "source_tree": "e1e0d84b1f7817069c44ceccf13173228d6b45fc",
+  "preview_base": "ddcb6737a8dde54c832c8cb5743383425193aaaf",
   "source": "Thomas Lodge, 1602, EEBO-TCP A04680",
   "work": "Antiquities",
   "available_books": [
@@ -40,7 +40,7 @@
   "X238_approved_empty_TCP_byte": 1970937,
   "source_preservation_and_exact_intervals": "PASS",
   "source_licence": "CC0 1.0 applies to the underlying TCP transcription",
-  "reader_sha256": "9d26651bfdd087c3d429b863a06ce4a6e99914f1b04f069895bfe4e192d9b66c",
+  "reader_sha256": "135b8fb702ff9c87c4e02178a0fd3a18121523e2e1c67f11d4ce5ae10c22c823",
   "new_assets_sha256": {
     "assets/xml/antiquities/English/Lodge1602/book-06.xml": "d9749fd66b25a75984ab98e0e15b59531873af8d8e21e1da691c3f309040d65e",
     "assets/data/lodge1602-antiquities/book-06.json": "3ef6e3b6049f3c49fcf485ccb151986c29d4b1fb25c0be2376e4b92c7a607c31",
@@ -52,5 +52,6 @@
     "assets/data/lodge1602-antiquities/book-09.json": "743d50a97786d292366aa797849509bd892c8944a2608e647d832bbf3c1f5a02",
     "assets/xml/antiquities/English/Lodge1602/book-10.xml": "b3d00d20a390e2ba45a20a8cde76fb1f194c1af7bb551567289965ec67b9886a",
     "assets/data/lodge1602-antiquities/book-10.json": "4e530b39dc5fe3c800f4851a8b4ac1c9218ac9253d90e67037077e5f45c3101d"
-  }
+  },
+  "X238_notice_uses_existing_reader_palette": true
 }
