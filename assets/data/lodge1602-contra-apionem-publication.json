@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "status": "SOURCE_AND_READER_CERTIFIED",
+  "source_commit": "38af60ff42ea733d3494d713c1f6f4450f624205",
+  "preview_base": "ef656708ce3b57f2804d8cde4b05f66d03857ffd",
+  "source": "Thomas Lodge, 1602, EEBO-TCP A04680",
+  "work": "Contra Apionem",
+  "available_books": [
+    "1",
+    "2"
+  ],
+  "identities": 616,
+  "unit_coverage": {
+    "1": 320,
+    "2": 296
+  },
+  "historical_confidence": {
+    "HIGH": 610,
+    "MEDIUM": 6,
+    "LOW": 0
+  },
+  "human_approved": [
+    "I.25",
+    "I.207",
+    "I.233",
+    "I.259",
+    "II.258",
+    "II.278"
+  ],
+  "approved_boundaries_and_endpoints_unchanged": true,
+  "empty_intervals": 0,
+  "frozen_scholarly_ZIP_sha256": "90aeaaa6b0cc9f6f3c1a5c3c92f167e729df91f04b33184b2d0fa21b7ec4247f",
+  "source_preservation_and_exact_intervals": "PASS",
+  "source_licence": "CC0 1.0 applies to underlying TCP transcription; independent project apparatus distinguished",
+  "new_assets_sha256": {
+    "assets/xml/contra-apionem/English/Lodge1602/book-01.xml": "3dea35680c9e7bad46d7e8ecca6876be0e957c0de0c29dcc39625f044127b5fc",
+    "assets/data/lodge1602-contra-apionem/book-01.json": "1995646e43ded0c42d7883c8384be7d4f15a070841edd88e12e526ca1fd52633",
+    "assets/xml/contra-apionem/English/Lodge1602/book-02.xml": "0af3a2ca46f22de52a8c481a70512a116d57463561fa739fd0754af6097b55ba",
+    "assets/data/lodge1602-contra-apionem/book-02.json": "965f133b6a4606473c329d7ea329685e8e50f4c4180a8f3d3c87c927d8622b56",
+    "assets/js/renderTei.js": "03bfb9b0de5e13e6b07bd638413b2b82a9ed2f7b0cc7c33eb6c09dabde3c9294",
+    "assets/css/tei.css": "3411e4fcaf69226e062da36783f1da69aa5db0b36807af03415daadb744a6b6a"
+  }
+}
