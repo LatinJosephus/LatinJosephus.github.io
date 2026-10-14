@@ -1,9 +1,9 @@
 {
   "schema": 1,
   "status": "SOURCE_AND_READER_CERTIFIED",
-  "source_commit": "0e222a81c762743b3f2cf355193d2fd2d837e165",
-  "source_tree": "f751e921704f09f142a24f2b99f6731ad9a0e24d",
-  "preview_base": "5449d96059b5a05b418fdfa470d1b3b022163872",
+  "source_commit": "0026ebd162c28de3c0005fbb1e39d0a29c2b7296",
+  "source_tree": "9419f882232e89c3a724df115ef3e10162c8575b",
+  "preview_base": "75ed6cddde0a1e1633997bd48d6b38d1eadd9526",
   "source": "Thomas Lodge, 1602, EEBO-TCP A04680",
   "work": "Antiquities",
   "available_books": [
@@ -12,43 +12,45 @@
     "2",
     "3",
     "4",
-    "5"
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10"
   ],
-  "new_identities": 1361,
-  "all_available_Lodge_identities": 1710,
+  "new_identities": 1764,
+  "all_available_Lodge_identities": 3474,
   "unit_coverage": {
-    "proem": 26,
-    "book-01": 320,
-    "book-03": 322,
-    "book-04": 331,
-    "book-05": 362
+    "book-06": 378,
+    "book-07": 394,
+    "book-08": 420,
+    "book-09": 291,
+    "book-10": 281
   },
   "Book_II_unchanged": true,
-  "frozen_scholarly_ZIP_sha256": "21ee32b9f6d5e375ced2839e9cacc9b2e77619a93ddd105fb83280c22282c783",
-  "all_eight_human_approvals": [
-    "I.65",
-    "I.79",
-    "I.159",
-    "I.166",
-    "I.206",
-    "III.82",
-    "IV.61",
-    "IV.312"
+  "frozen_scholarly_ZIP_sha256": "804662293e12910f00e955835217ffd9d504eaef700dbf37a1795310dc91b146",
+  "all_five_human_approvals": [
+    "VI.61",
+    "VIII.170",
+    "IX.75",
+    "X.61",
+    "X.238"
   ],
-  "I166_original_TCP_byte": 158986,
+  "X238_approved_empty_TCP_byte": 1970937,
   "source_preservation_and_exact_intervals": "PASS",
   "source_licence": "CC0 1.0 applies to the underlying TCP transcription",
-  "reader_sha256": "ff9ecd9c703f7e518564990ab6f1287eebb0717ae1031cc4f0f8786dcdeac8c4",
+  "reader_sha256": "9d26651bfdd087c3d429b863a06ce4a6e99914f1b04f069895bfe4e192d9b66c",
   "new_assets_sha256": {
-    "assets/xml/antiquities/English/Lodge1602/preface.xml": "ea3af6e844ba0158bc41c9897b1983e4fbf718ad1097e3c1b32b8b2ceb75a509",
-    "assets/data/lodge1602-antiquities/preface.json": "b22ff93b4f38217fbf09826ce70cdfc73b1463ba2e9b435fb903a34e60890347",
-    "assets/xml/antiquities/English/Lodge1602/book-01.xml": "aa5463ce701777bd8db32539df1bc3081e830c0a7bde4fcf5db0076f8b887031",
-    "assets/data/lodge1602-antiquities/book-01.json": "a5b347029e72b72030b68f128d17f2834c26b2ffea97521c22337df72796da4a",
-    "assets/xml/antiquities/English/Lodge1602/book-03.xml": "d6c7e919347594fc9e152a79da2710922f55c068c0045ab6c0b342082805b5d6",
-    "assets/data/lodge1602-antiquities/book-03.json": "e9a1284aac7b822b2bc01e56a43c32fcb025854737ca8e336aa7ad905e49d72b",
-    "assets/xml/antiquities/English/Lodge1602/book-04.xml": "bdd423e7104210cab3cfcb437cd67f1dd872c16a820b3edfd89bb59b4655fe4f",
-    "assets/data/lodge1602-antiquities/book-04.json": "b0d312eae1f0feec6cb30aa02ca2ed1148985f95ff6fad6c6e48cc21ef417c96",
-    "assets/xml/antiquities/English/Lodge1602/book-05.xml": "fcd4d982de21bd8a83ba1f2ebfd89141b1500f3f013412f3fde81c68e1b6aa4d",
-    "assets/data/lodge1602-antiquities/book-05.json": "347718ae60a620c1eb4a0d7a639bb882b53def277088df84634680d9235e9a2b"
+    "assets/xml/antiquities/English/Lodge1602/book-06.xml": "d9749fd66b25a75984ab98e0e15b59531873af8d8e21e1da691c3f309040d65e",
+    "assets/data/lodge1602-antiquities/book-06.json": "3ef6e3b6049f3c49fcf485ccb151986c29d4b1fb25c0be2376e4b92c7a607c31",
+    "assets/xml/antiquities/English/Lodge1602/book-07.xml": "c809b44802245653ba40eb75138208b3624243980a7333de3e1f4362c326043a",
+    "assets/data/lodge1602-antiquities/book-07.json": "f624cd4a2ae809c211be67f860c71a2910a2edf93c31fb3c0721828d5193c662",
+    "assets/xml/antiquities/English/Lodge1602/book-08.xml": "a88a4d057ca18c3a19d0e6f606bdda86cbed74a7d05193a7e265968cfe0832e1",
+    "assets/data/lodge1602-antiquities/book-08.json": "52ba8743cb79c18fe9a8cee93fdb861a5b9cb90cbc20643446a72c5ed742462b",
+    "assets/xml/antiquities/English/Lodge1602/book-09.xml": "4e31123e6fbaa89c97089ba328c239f27bbe70c2143285cf73b82f0992fbdd17",
+    "assets/data/lodge1602-antiquities/book-09.json": "743d50a97786d292366aa797849509bd892c8944a2608e647d832bbf3c1f5a02",
+    "assets/xml/antiquities/English/Lodge1602/book-10.xml": "b3d00d20a390e2ba45a20a8cde76fb1f194c1af7bb551567289965ec67b9886a",
+    "assets/data/lodge1602-antiquities/book-10.json": "4e530b39dc5fe3c800f4851a8b4ac1c9218ac9253d90e67037077e5f45c3101d"
   }
 }
