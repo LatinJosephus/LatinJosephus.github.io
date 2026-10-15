@@ -341,18 +341,21 @@
 </div>
 
     
-    <section id="deh-parallels" hidden aria-labelledby="parallel-title" data-alignment-url="/assets/data/deh-josephus-concordance.json" data-xml-base="/assets/xml/" data-bellum-url="/bellum-judaicum/">
+    <section id="deh-parallels" hidden aria-labelledby="parallel-title" data-alignment-url="/assets/data/deh-josephus-concordance.json" data-xml-base="/assets/xml/" data-aj-alignment-url="/assets/data/deh-aj-display.v1.json" data-aj-alignment-sha="9e93c5879eafb168faccd2706bdb2e4a1643f2b05d2cd58ae8b2f50a87626809" data-antiquities-url="/antiquities/" data-bellum-url="/bellum-judaicum/">
   <div class="parallel-toolbar">
-    <h2 id="parallel-title">DEH ↔ Bellum parallels</h2>
+    <h2 id="parallel-title">DEH ↔ Josephus parallels</h2>
     <a id="parallel-close">Return to DEH reading</a>
   </div>
-  <nav class="parallel-navigation" aria-label="DEH passages with Bellum parallels">
+  <nav class="parallel-navigation" aria-label="DEH passages with Josephus parallels">
     <label for="parallel-book">Book <select id="parallel-book"></select></label>
     <label for="parallel-chapter">Chapter <select id="parallel-chapter"></select></label>
     <label for="parallel-unit">Unit <select id="parallel-unit"></select></label>
   </nav>
+  <label for="parallel-work">Corresponding work:</label>
+  <select id="parallel-work"><option value="BJ">Bellum Judaicum</option>
+<option value="AJ">Antiquitates Judaicae</option></select>
   <p class="parallel-identity">The Greek Bellum underlies the DEH adaptation.
-    Cardwell is an independent Latin translation of the Bellum.</p>
+    Cardwell is an independent Latin translation of the Bellum. Antiquities references identify related or corresponding accounts, sometimes alternative narrative material; they do not establish exact verbal equivalence or DEH’s textual dependence on Antiquities.</p>
   <p class="parallel-evidence">Parallels transcribed from the references in Ussani/Mras.
     Printed references have not yet been independently verified. Reference order follows the edition.
     A parallel indicates corresponding material, not exact verbal equivalence, full-unit correspondence, or dependence between the Latin versions.</p>
@@ -370,7 +373,7 @@
     </article>
     <article class="pane" aria-labelledby="parallel-bj-title">
       <h3 id="parallel-bj-title">Bellum Judaicum</h3>
-      <label for="parallel-bj-source">Bellum language / source:</label>
+      <label id="parallel-josephus-source-label" for="parallel-bj-source">Bellum language / source:</label>
       <select id="parallel-bj-source">
         <option value="niese">Greek — Niese</option>
         <option value="cardwell">Latin — Cardwell (1837)</option>
@@ -452,7 +455,7 @@
 <!-- CETEIcean and TEI display JS -->
 <script src="/assets/js/CETEI.js"></script>
 
-<script type="module" src="/assets/js/dehParallels.js?v=1791579937"></script>
+<script type="module" src="/assets/js/dehParallels.js?v=20261015-deh-aj-f13613e2"></script>
 
 <script src="/assets/js/renderTei.js?v=lodge-apion-38af60ff"></script>
 
