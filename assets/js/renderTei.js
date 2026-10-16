@@ -2665,6 +2665,49 @@ document.addEventListener("DOMContentLoaded", () => {
     return bellumNieseView(language, data, nieseNum);
   };
 
+  const book18NumberingDisplayCopy = (language, data) => {
+    if (!data || activeWork.slug !== "antiquities"
+      || String(state.bookNum) !== "18" || state.viewingLevel !== "book-level"
+      || !((language === "Latin" && state.sources.Latin === "bamberg78")
+        || (language === "English" && state.sources.English === "whiston"))) return data;
+
+    // Book view can share its tree with the navigation and boundary resolvers.
+    // Add or hide labels only on the final display copy, after view selection.
+    const display = data.cloneNode(true);
+    const nextContentNode = node => {
+      while (node && (node.nodeType === Node.COMMENT_NODE
+        || (node.nodeType === Node.TEXT_NODE && !node.textContent.trim()))) node = node.nextSibling;
+      return node;
+    };
+
+    if (language === "Latin") {
+      (nieseIdentityRegistry()?.sections || []).forEach(section => {
+        const start = section.Latin?.start;
+        if (section.Latin?.available === false || start?.kind !== "paragraph") return;
+        const paragraph = traditionalPoint(display, start)?.node;
+        if (!paragraph?.matches("tei-p") || !paragraph.closest("tei-body")
+          || paragraph.closest("tei-note, tei-app, tei-rdg, [data-original], tei-teiheader")) return;
+        const first = nextContentNode(paragraph.firstChild);
+        const label = `[${section.number}]`;
+        if (!first?.hidden && ((first?.matches?.("tei-num") && first.textContent.trim() === label)
+          || (first?.matches?.('tei-milestone[unit="niese"]')
+            && first.getAttribute("n") === String(section.number)))) return;
+        const generated = makeGeneratedNieseLabel(section.number);
+        if (section.Latin.note) generated.title = section.Latin.note;
+        paragraph.insertBefore(generated, paragraph.firstChild);
+      });
+    } else {
+      display.querySelectorAll("tei-p > tei-num").forEach(label => {
+        if (label.closest("tei-note, tei-app, tei-rdg, [data-original], tei-teiheader")) return;
+        const match = label.textContent.trim().match(/^\[([1-9]\d*)\]$/);
+        const marker = nextContentNode(label.nextSibling);
+        if (match && marker?.matches?.('tei-milestone[unit="niese"]')
+          && marker.getAttribute("n") === match[1]) label.hidden = true;
+      });
+    }
+    return display;
+  };
+
   const decorateNieseMarkers = (language, data) => {
     if (!data || !supportsNieseSections()) return;
 
@@ -3457,7 +3500,8 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    Object.entries(viewData).forEach(([language, data]) => {
+    Object.entries(viewData).forEach(([language, sourceData]) => {
+      const data = book18NumberingDisplayCopy(language, sourceData);
       const pane = languagePanes[language];
 
       if (pane && data) {
