@@ -2665,10 +2665,11 @@ document.addEventListener("DOMContentLoaded", () => {
     return bellumNieseView(language, data, nieseNum);
   };
 
-  const book18NumberingDisplayCopy = (language, data) => {
+  const antiquitiesBookNumberingDisplayCopy = (language, data) => {
     if (!data || activeWork.slug !== "antiquities"
-      || String(state.bookNum) !== "18" || state.viewingLevel !== "book-level"
-      || !((language === "Latin" && state.sources.Latin === "bamberg78")
+      || state.viewingLevel !== "book-level"
+      || !((language === "Latin" && ["18", "19"].includes(String(state.bookNum))
+          && state.sources.Latin === "bamberg78")
         || (language === "English" && state.sources.English === "whiston"))) return data;
 
     // Book view can share its tree with the navigation and boundary resolvers.
@@ -2697,10 +2698,19 @@ document.addEventListener("DOMContentLoaded", () => {
         paragraph.insertBefore(generated, paragraph.firstChild);
       });
     } else {
+      const nextCitationNode = node => {
+        node = nextContentNode(node);
+        // Empty structural anchors have no displayed text. Keep the anchor,
+        // but allow an otherwise adjacent matching citation across it.
+        while (node?.matches?.('tei-anchor[type="traditional-boundary"], tei-anchor[type="bamberg-boundary"]')
+          && !node.textContent.trim()) node = nextContentNode(node.nextSibling);
+        return node;
+      };
       display.querySelectorAll("tei-p > tei-num").forEach(label => {
-        if (label.closest("tei-note, tei-app, tei-rdg, [data-original], tei-teiheader")) return;
+        if (!label.closest("tei-body")
+          || label.closest("tei-note, tei-app, tei-rdg, [data-original], tei-teiheader")) return;
         const match = label.textContent.trim().match(/^\[([1-9]\d*)\]$/);
-        const marker = nextContentNode(label.nextSibling);
+        const marker = nextCitationNode(label.nextSibling);
         if (match && marker?.matches?.('tei-milestone[unit="niese"]')
           && marker.getAttribute("n") === match[1]) label.hidden = true;
       });
@@ -3501,7 +3511,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     Object.entries(viewData).forEach(([language, sourceData]) => {
-      const data = book18NumberingDisplayCopy(language, sourceData);
+      const data = antiquitiesBookNumberingDisplayCopy(language, sourceData);
       const pane = languagePanes[language];
 
       if (pane && data) {
