@@ -1,0 +1,4 @@
+# Preserve exact search export bytes through Windows Git transfers.
+/assets/search/** -text
+/search/index.html -text
+/.gitattributes -text
