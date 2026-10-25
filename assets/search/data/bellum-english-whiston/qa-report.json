@@ -1,11 +1,11 @@
 {
   "status": "PASS",
-  "generatedAt": "2026-10-21T16:10:07.019Z",
+  "generatedAt": "2026-10-25T20:57:58.012Z",
   "independentVerifier": "bin/search/tests/whiston-bellum-corpus-qa.mjs",
   "readerBaseline": {
-    "expectedSha256": "03bfb9b0de5e13e6b07bd638413b2b82a9ed2f7b0cc7c33eb6c09dabde3c9294",
-    "observedSha256": "03bfb9b0de5e13e6b07bd638413b2b82a9ed2f7b0cc7c33eb6c09dabde3c9294",
-    "provenance": "observed-source-checkout",
+    "expectedSha256": "17d9b3940cff1672d6645487e0b9de501236d84f661ea6802ca3379c2bfbede7",
+    "observedSha256": "17d9b3940cff1672d6645487e0b9de501236d84f661ea6802ca3379c2bfbede7",
+    "provenance": "explicit-argument",
     "preservationDuringRunRequired": true,
     "publicationInput": false
   },
@@ -268,7 +268,7 @@
     },
     "catalog": {
       "path": "bin/search/catalog.json",
-      "sha256": "f8d53bbe83d053c0d2ce56ca7a94cf7d5155527f255d2d141d138981b058a27a",
+      "sha256": "d4ff8c423ede05b8d74a72b460d6d2ede8d5482bd26cfe83e57b397638344c1c",
       "bytes": 56253
     },
     "engine": {
@@ -283,12 +283,12 @@
     },
     "concordance": {
       "path": "bin/search/concordance.mjs",
-      "sha256": "fe89290371c1e9dc4f531657a8165c5b679d24e6869e834b93455372e04fa900",
+      "sha256": "cfe34e5bcad06f8f4d50b29498c6cc84ee47f1f5a114a51af849f4c50267dcef",
       "bytes": 32263
     },
     "uiUtils": {
       "path": "bin/search/ui-utils.mjs",
-      "sha256": "bddc39cc1ce40ad46e820e632e17a8bd6bf94347b919347044793e02a64c8003",
+      "sha256": "39a13121b8de63e4a70d5600a38c3aab124275b3a9dfccc0476839c330dba644",
       "bytes": 15956
     },
     "verifier": {
@@ -323,8 +323,8 @@
     },
     "originalReader": {
       "path": "assets/js/renderTei.js",
-      "sha256": "03bfb9b0de5e13e6b07bd638413b2b82a9ed2f7b0cc7c33eb6c09dabde3c9294",
-      "bytes": 161463
+      "sha256": "17d9b3940cff1672d6645487e0b9de501236d84f661ea6802ca3379c2bfbede7",
+      "bytes": 169964
     },
     "testSources": [],
     "books": [
@@ -499,6 +499,7 @@
     "exports": "Exact concordance geometry, source slices, editorial marks, ordinary and negative-only CSV exports, all selected books and reader parameters."
   },
   "counts": {
+    "ExplicitReaderBaseline": 1,
     "OnlyAcceptedBooksPublished": 1,
     "CollectionIdentity": 1,
     "IndependentCollectionTotals": 1,
@@ -960,7 +961,7 @@
     "InputUnchangedDuringRun": 43
   },
   "totalQueries": 39905,
-  "assertions": 1182417,
+  "assertions": 1182418,
   "failedAssertions": 0,
   "examples": [
     {
@@ -1006,7 +1007,7 @@
       "purpose": "Complete Bellum count"
     }
   ],
-  "durationSeconds": 40.1,
+  "durationSeconds": 30.2,
   "limitations": [
     "This validates the accepted Whiston Bellum XML, not a new translation or printed-edition collation.",
     "Browser interaction is verified separately."
