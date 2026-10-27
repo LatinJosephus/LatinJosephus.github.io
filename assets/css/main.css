@@ -1407,5 +1407,175 @@ html[data-theme=dark] .lj-support .lj-support__dark {
     padding: 18px 16px;
   }
 }
+/* A compact apparatus, with native keyboard-accessible scholarly details. */
+#reader-annotations {
+  max-height: min(46vh, 30rem);
+  overflow-y: auto;
+  background: var(--global-bg-color);
+  color: var(--global-text-color);
+  border-top: 1px solid var(--global-text-color-light);
+}
+#reader-annotations .accordion-header {
+  z-index: 1;
+  background: var(--global-bg-color);
+  margin: 0;
+}
+#reader-annotations .accordion-button, #reader-annotations .accordion-button:not(.collapsed) {
+  font-size: 1.15rem;
+  padding: 0.7rem 1rem;
+}
+#reader-annotations .accordion-body {
+  padding: 0.65rem 1rem 1.25rem;
+  min-height: 0;
+}
+#reader-annotations #collapse-annotations:not(.show) {
+  display: none;
+}
+#reader-annotations .annotation-about {
+  font-family: var(--lj-font-text);
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 0.8rem;
+}
+#reader-annotations .annotation-about summary, #reader-annotations .annotation-about p {
+  font-family: inherit;
+  font-size: inherit;
+}
+#reader-annotations .annotation-about .annotation-notation-key {
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+#reader-annotations summary {
+  cursor: pointer;
+  padding: 0.3rem 0;
+}
+#reader-annotations a {
+  color: var(--global-theme-color);
+  text-decoration: underline;
+}
+#reader-annotations .manuscript-annotation {
+  padding: 0.65rem 0;
+  border-top: 1px solid var(--global-text-color-light);
+}
+#reader-annotations h4 {
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0 0 0.3rem;
+}
+#reader-annotations p {
+  margin: 0.3rem 0;
+}
+#reader-annotations .annotation-transcription, #reader-annotations .annotation-wording {
+  color: var(--lj-brand-accent, var(--global-theme-color));
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 1.12rem;
+  line-height: 1.6;
+}
+#reader-annotations .annotation-transcription {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+#reader-annotations .annotation-transcription .annotation-editorial-note, #reader-annotations .annotation-wording .annotation-editorial-note, #reader-annotations .annotation-reading-status {
+  color: var(--global-text-color);
+}
+#reader-annotations .annotation-reading-status {
+  font-size: 0.85em;
+  font-style: normal;
+}
+#reader-annotations .annotation-category {
+  font-style: italic;
+}
+#reader-annotations .annotation-meta, #reader-annotations .annotation-status, #reader-annotations .annotation-description, #reader-annotations .annotation-details {
+  font-size: 0.9rem;
+}
+#reader-annotations .annotation-editorial-note {
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-style: normal;
+}
+#reader-annotations .annotation-hand {
+  border: 1px solid currentColor;
+  border-radius: 0.2rem;
+  padding: 0.05rem 0.3rem;
+  white-space: nowrap;
+}
+#reader-annotations .annotation-passage {
+  display: inline-block;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+  margin-right: 1rem;
+}
+#reader-annotations .annotation-details {
+  margin-top: 0.2rem;
+}
+#reader-annotations dl {
+  display: grid;
+  grid-template-columns: minmax(9rem, 1fr) 3fr;
+  gap: 0.25rem 0.75rem;
+  margin: 0.4rem 0;
+}
+#reader-annotations dt, #reader-annotations dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+#reader-annotations pre {
+  color: inherit;
+  background: transparent;
+  padding: 0.5rem 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 0.85rem;
+}
+#reader-annotations :focus-visible {
+  outline: 2px solid var(--global-theme-color);
+  outline-offset: 3px;
+}
+#reader-annotations .manuscript-annotation:target, #reader-annotations .manuscript-annotation:focus {
+  outline: 2px solid var(--global-theme-color);
+  outline-offset: -2px;
+}
+
+.text-annotations {
+  display: block;
+  width: fit-content;
+  font: 0.85rem/1.6 sans-serif;
+  margin: 0.35rem 0;
+  text-align: start;
+}
+
+.annotation-target {
+  outline: 2px solid var(--global-theme-color);
+  outline-offset: 3px;
+}
+
+#latin [id] {
+  scroll-margin-top: 6rem;
+  scroll-margin-bottom: 48vh;
+}
+
+#reader-annotations .manuscript-annotation {
+  scroll-margin-top: 3rem;
+  scroll-margin-bottom: 0.5rem;
+}
+
+html.has-manuscript-annotations body {
+  padding-bottom: var(--annotation-panel-space, 4rem);
+}
+
+@media (max-width: 600px) {
+  #reader-annotations {
+    max-height: 48vh;
+  }
+  #reader-annotations .accordion-body {
+    padding: 0.5rem 0.75rem 1rem;
+  }
+  #reader-annotations dl {
+    display: block;
+  }
+  #reader-annotations dd {
+    margin-bottom: 0.4rem;
+  }
+}
 
 /*# sourceMappingURL=main.css.map */
