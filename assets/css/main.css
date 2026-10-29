@@ -912,6 +912,11 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+.info-container b,
+.info-container strong {
+  font-weight: 700;
+}
+
 h1,
 h2,
 h3,
