@@ -2,3 +2,6 @@
 /assets/search/** -text
 /search/index.html -text
 /.gitattributes -text
+
+# Lauro payload bytes are bound by the reader manifest.
+/assets/data/deh-lauro1544/** -text

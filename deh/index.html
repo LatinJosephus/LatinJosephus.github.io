@@ -41,7 +41,7 @@
 <link rel="icon" type="image/svg+xml" href="/assets/img/brand/bamberg/bamberg-micro-icon-light.svg">
 <link rel="icon" type="image/svg+xml" media="(prefers-color-scheme: dark)" href="/assets/img/brand/bamberg/bamberg-micro-icon-dark.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/brand/bamberg/bamberg-favicon-light-180.png">
-<link rel="stylesheet" href="/assets/css/main.css?v=about-texts-c0fa6d2aa480">
+<link rel="stylesheet" href="/assets/css/main.css">
 <link rel="canonical" href="/deh/">
 
 
@@ -248,8 +248,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/assets/css/tei.css?v=20261025-pollard-v1.1">
     
-    <link rel="stylesheet" href="/assets/css/deh-parallels.css?v=1792885130">
+    <link rel="stylesheet" href="/assets/css/deh-parallels.css?v=1793494133">
     <link rel="stylesheet" href="/assets/css/millet.css">
+    <link rel="stylesheet" href="/assets/css/lauro.css">
     
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
@@ -342,6 +343,10 @@
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="checkbox" id="french-pane-select" value="french">
               <label class="form-check-label" for="french-pane-select">French</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="italian-pane-select" value="italian">
+              <label class="form-check-label" for="italian-pane-select">Italian</label>
             </div>
             
 
@@ -470,6 +475,7 @@
       </div>
       
       <div id="french" class="pane hidden" lang="fr" hidden><h3>French: Millet 1556</h3></div>
+      <div id="italian" class="pane hidden" lang="it" hidden><h3>Italian: Lauro 1544</h3></div>
       
       <div class="accordion card fixed-bottom" id="reader-annotations">
   <div class="accordion-item">
@@ -529,14 +535,15 @@
 <!-- CETEIcean and TEI display JS -->
 <script src="/assets/js/CETEI.js"></script>
 
-<script type="module" src="/assets/js/dehParallels.js?v=20261025-pollard-v1.1-final"></script>
+<script type="module" src="/assets/js/dehParallels.js?v=1793494133"></script>
 <script type="module" src="/assets/js/milletReader.js"></script>
+<script type="module" src="/assets/js/lauroReader.js"></script>
+<script src="/assets/js/dehManuscriptAnnotations.js?v=1793494133"></script>
 
-<script src="/assets/js/annotationEditorialEnglish.js?v=annotations-0042341a4a01"></script>
-<script src="/assets/js/annotationEditorialUpdates.js?v=annotations-0042341a4a01"></script>
-<script src="/assets/js/dehManuscriptAnnotations.js?v=credit-4f6033843431"></script>
-<script src="/assets/js/manuscriptAnnotations.js?v=deh-4d3d89d80849"></script>
-<script src="/assets/js/renderTei.js?v=deh-4d3d89d80849"></script>
+<script src="/assets/js/annotationEditorialEnglish.js?v=1793494133"></script>
+<script src="/assets/js/annotationEditorialUpdates.js?v=1793494133"></script>
+<script src="/assets/js/manuscriptAnnotations.js?v=1793494133"></script>
+<script src="/assets/js/renderTei.js?v=20261031-lauro-v12"></script>
 
 
 
