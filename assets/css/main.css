@@ -583,6 +583,11 @@ html.transition *:after {
   padding: 8px;
 }
 
+.info-container a em,
+.info-container a i {
+  color: inherit;
+}
+
 .info-container .lj-home-work > em > a {
   font-size: 1.125em;
 }
