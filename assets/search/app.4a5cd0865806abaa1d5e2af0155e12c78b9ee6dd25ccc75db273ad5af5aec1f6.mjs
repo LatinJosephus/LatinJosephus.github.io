@@ -1,6 +1,6 @@
-import {createCollection} from './collection.2d2a0730290a69755de01e456a8f19910c7b3423bbc67f319e5494835c957b8d.mjs';
-import {buildResultCards,citationFor,bookCitation,romanBook,readerURL,locationState,searchURL,mergedRanges,excerptWindows,citationScheme,citationUnitLabels,excerptCitation,defaultCollection,annotatedTextSegments,passageDivisionLabel,emptySourceNote,textLanguage,spellingEquivalence} from './ui-utils.95daf5f46901378438e1e62fb14a4682471f19de554dd626c517e9c0853c8977.mjs';
-import {buildConcordance,exportConcordance} from './concordance.d53186b08bbb5b50e6c13c0033dc0679172da54b2082480fc3ba20b7245af292.mjs';
+import {createCollection} from './collection.dc1c8929d9ebe5c3dea9903aa27794b7a6ecf010ccd4dc6311593464e2fb7aeb.mjs';
+import {buildResultCards,citationFor,bookCitation,romanBook,readerURL,locationState,searchURL,mergedRanges,excerptWindows,citationScheme,citationUnitLabels,excerptCitation,defaultCollection,annotatedTextSegments,passageDivisionLabel,emptySourceNote,textLanguage,spellingEquivalence} from './ui-utils.5e56b7b348531e7dd902b37fc2cdc82525f223795c0f0bbdabd15100d3c2d521.mjs';
+import {buildConcordance,exportConcordance} from './concordance.ad06f1a1b587e35eb7f398c6702cfcf865ff3dcefb95056cef4a50dabfb0e7a2.mjs';
 import {createEngine} from './engine.a138646ad9608b2d74b5d6c1bf7e39d190ffc34c62e22fe0ef5469bb1c4b0a89.mjs';
 
 const root=document.getElementById('lj-search');
@@ -14,7 +14,14 @@ let collection=null,catalog=null,catalogPromise=null,cards=[],items=[],shown=0,s
 function node(tag,text,className){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(className)e.className=className;return e;}
 function link(text,url,className){const e=node('a',text,className);e.href=url;e.target='_blank';e.rel='noopener noreferrer';return e;}
 function option(text,value){const e=node('option',text);e.value=value;return e;}
-function selectorEdition(source){return ({'deh-french-millet1556':'Millet 1556','deh-italian-lauro1544':'Lauro 1544'})[source.id]||source.edition;}
+function selectorEdition(source) {
+  if (source.edition === 'Whiston') return 'Whiston (1737)';
+  return ({
+    'antiquities-latin-froben1524': 'Froben (1524)',
+    'deh-french-millet1556': 'Millet (1556)',
+    'deh-italian-lauro1544': 'Lauro (1544)',
+  })[source.id] || source.edition;
+}
 function selectedCollections(state=null){
   if(!catalog)return [];
   const work=state?.work??els.work.value,book=state?.book??els.book.value;
@@ -35,6 +42,7 @@ function updateScopeHint(){
   if(apion)els.scopeHint.textContent+=' In Boysen Latin Contra Apionem, phrases do not cross the source’s asterisk-marked interruptions; Boolean conditions can relate words on either side.';
   if(collections.some(collection=>collection.id==='antiquities-latin-bamberg78'))els.scopeHint.textContent+=' The Bamberg Latin Antiquities includes the Proem with Book I. Phrases stop at marked gaps, empty source intervals, the documented Book IX lacuna, the delimited interruptions in XVI and XX, and the Proem’s end. Split portions of the same Niese section share Boolean scope; exact phrases follow physical source order. The two labelled Bellum insertions in Book XI are separate citation units.';
   if(collections.some(collection=>collection.id==='antiquities-latin-froben1524'))els.scopeHint.textContent+=' Froben results use printed pages. Whole-book phrases may cross pages, but stop at the end of the Proem.';
+  if(collections.some(collection=>collection.edition==='Lodge (1602)'))els.scopeHint.textContent+=' Lodge uses Niese sections. Exact phrases stop at marked gaps, empty sections and the end of the Antiquities Proem.';
   if(collections.some(collection=>collection.id==='antiquities-english-whiston'))els.scopeHint.textContent+=' Whiston English Antiquities phrases follow physical source order, including Book XI’s displaced sequence. They may cross physically adjacent Niese sections in whole-book scope, but stay within one book and stop at the Proem’s end. Headings, printed citation labels and footnotes are excluded.';
   if(collections.some(collection=>collection.id==='bellum-english-whiston'))els.scopeHint.textContent+=' Whiston English Bellum includes all seven books. Its Book I preface is part of the continuous book. Supplied text in VII.208–209 remains searchable and is shown in brackets; it does not interrupt exact phrases.';
   if(collections.some(collection=>collection.id==='contra-apionem-english-whiston'))els.scopeHint.textContent+=' Whiston English Contra Apionem includes both books. Whiston’s internal division markers do not interrupt phrases. Whole-book phrases may cross adjacent Niese sections, but remain within one book and edition.';
@@ -54,9 +62,26 @@ function populateBooks(selected='all'){
   updateScopeHint();
 }
 function populateControls(){
-  els.work.replaceChildren();
-  els.work.append(option('All available works and editions','all'));
-  for(const c of catalog.collections)els.work.append(option(`${c.label} · ${c.language} · ${selectorEdition(c)}`,c.id));
+  const groups = new Map([
+    ['antiquities', {title: 'Antiquitates Judaicae', options: []}],
+    ['bellum', {title: 'Bellum Judaicum', options: []}],
+    ['contra-apionem', {title: 'Contra Apionem', options: []}],
+    ['deh', {title: 'De excidio Hierosolymitano', options: []}],
+  ]);
+  const editions = catalog.collections.slice().sort((a, b) => Number(a.language !== 'Latin') - Number(b.language !== 'Latin'));
+  for (const edition of editions) {
+    if (!groups.has(edition.work)) groups.set(edition.work, {title: edition.label, options: []});
+    const group = groups.get(edition.work);
+    group.options.push(option(`${group.title} · ${edition.language} · ${selectorEdition(edition)}`, edition.id));
+  }
+  els.work.replaceChildren(option('All available works and editions', 'all'));
+  for (const {title, options} of groups.values()) {
+    if (!options.length) continue;
+    const group = node('optgroup');
+    group.label = title;
+    group.append(...options);
+    els.work.append(group);
+  }
   els.work.value=defaultCollection(catalog);
   els.work.disabled=false;
   populateBooks();
@@ -259,7 +284,7 @@ function changeView(nextView){
 async function ensureCollection(){
   if(collection)return collection;
   if(!catalogPromise)catalogPromise=(async()=>{
-    const response=await fetch(new URL('./catalog.186fe2f8250e6659ad2c42054ee9f2a33516211a73b6d95742fcaba98533fab2.json',import.meta.url),{cache:'no-cache'});
+    const response=await fetch(new URL('./catalog.e7b6d3b5f30fa613c51f42306d4ab6a1dccbf7b8c7cd91ec491aa006d84dec70.json',import.meta.url),{cache:'no-cache'});
     if(!response.ok)throw new Error(`The text catalogue could not be loaded (HTTP ${response.status}). Please try Search again.`);
     const loaded=await response.json();
     if(!globalThis.lunr)throw new Error('The search library did not load. Please reload this page.');
@@ -407,14 +432,17 @@ async function annotationSearch() {
     els.downloadStatus.textContent = ''; els.region.setAttribute('aria-busy', 'true');
     try {
       if (!engine) {
-        const response = await fetch(new URL('./annotations.ad8d4e7a4f98b09d47017efb711b492aadac5388a3b3c5adf5a0af76c29ccdda.bundle.json', import.meta.url), {cache: 'no-cache'});
+        const response = await fetch(new URL('./annotations.63ee3d0ec7eb7b582bccf6af01237c8260e92b3d554eaef3a09f12226a06a349.bundle.json', import.meta.url), {cache: 'no-cache'});
         if (!response.ok) throw new Error(`The annotation index could not be loaded (HTTP ${response.status}). Try Search again.`);
         const bundle = await response.json();
         engine = createEngine(bundle, globalThis.lunr); records = engine.records;
         els.work.replaceChildren(option('All annotated works', 'all'), ...Object.entries(works).map(([value, label]) => option(label, value)));
         els.work.value = Object.hasOwn(works, params.get('work')) ? params.get('work') : 'all';
         fillBooks(params.get('book'));
-        if ([...manuscript.options].some(entry => entry.value === params.get('manuscript'))) manuscript.value = params.get('manuscript');
+        const savedManuscript = params.get('manuscript');
+        const manuscriptName = savedManuscript === 'Milan BA Cimelio S.P. 11/1'
+          ? 'Milan, Biblioteca Ambrosiana, Cimelio 1' : savedManuscript;
+        if ([...manuscript.options].some(entry => entry.value === manuscriptName)) manuscript.value = manuscriptName;
         els.query.value = params.get('q') || '';
         els.fold.checked = params.get('fold') === '1';
         for (const select of [els.work, els.book, manuscript]) select.disabled = false;
