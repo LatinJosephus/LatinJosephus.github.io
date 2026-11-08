@@ -251,6 +251,7 @@
     <link rel="stylesheet" href="/assets/css/deh-parallels.css?v=1793494133">
     <link rel="stylesheet" href="/assets/css/millet.css">
     <link rel="stylesheet" href="/assets/css/lauro.css">
+    <link rel="stylesheet" href="/assets/css/deh-commentary.css">
     
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
@@ -347,6 +348,10 @@
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="checkbox" id="italian-pane-select" value="italian">
               <label class="form-check-label" for="italian-pane-select">Italian</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="commentary-pane-select" aria-controls="commentary">
+              <label class="form-check-label" for="commentary-pane-select">Commentary</label>
             </div>
             
 
@@ -482,6 +487,10 @@
       
       <div id="french" class="pane hidden" lang="fr" hidden><h3>French: Millet 1556</h3></div>
       <div id="italian" class="pane hidden" lang="it" hidden><h3>Italian: Lauro 1544</h3></div>
+      <section id="commentary" class="pane hidden" lang="en" aria-labelledby="commentary-heading" hidden>
+        <h3 id="commentary-heading">Commentary</h3>
+        <div id="deh-commentary-notes"></div>
+      </section>
       
       <div class="accordion card fixed-bottom" id="reader-annotations">
   <div class="accordion-item">
@@ -551,6 +560,7 @@
 <script type="module" src="/assets/js/dehParallels.js?v=20261102-reader-steps"></script>
 <script type="module" src="/assets/js/milletReader.js"></script>
 <script type="module" src="/assets/js/lauroReader.js"></script>
+<script type="module" src="/assets/js/dehCommentary.js"></script>
 <script src="/assets/js/dehManuscriptAnnotations.js?v=1793494133"></script>
 
 <script src="/assets/js/annotationEditorialEnglish.js?v=1793494133"></script>
