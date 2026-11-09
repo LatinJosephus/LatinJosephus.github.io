@@ -5,3 +5,7 @@
 
 # Lauro payload bytes are bound by the reader manifest.
 /assets/data/deh-lauro1544/** -text
+
+# Preserve the exact DEH downloads on checkout.
+/assets/downloads/deh/*.epub binary
+/assets/downloads/deh/*.pdf binary
