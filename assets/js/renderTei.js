@@ -500,11 +500,12 @@ document.addEventListener("DOMContentLoaded", () => {
     state.subchapterNum = rows[0]?.subchapter || null;
     if (!state.subchapterNum) state.viewingLevel = isPreface() ? "book-level" : "chapter-level";
   };
-  const structuralUnavailable = (language, reason) => {
+  const structuralUnavailable = (language, reason, {showSubstitutionNotice = true} = {}) => {
     const notice = document.createElement("div");
     notice.className = "alert alert-secondary structural-unavailable";
     notice.setAttribute("role", "status");
-    notice.textContent = `${language}: ${reason} No nearby text has been substituted.`;
+    notice.textContent = `${language}: ${reason}`;
+    if (showSubstitutionNotice) notice.textContent += " No nearby text has been substituted.";
     return notice;
   };
   const traditionalPoint = (data, locator) => {
@@ -2487,7 +2488,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const wrapper = document.createElement("tei-div2");
       wrapper.setAttribute("type", "niese-section"); wrapper.setAttribute("n", String(wanted));
       wrapper.dataset.syntheticSection = "niese-derived";
-      wrapper.appendChild(structuralUnavailable(language, identity[language].note || "This section is unavailable in this source."));
+      wrapper.appendChild(structuralUnavailable(language,
+        identity[language].note || "This section is unavailable in this source.",
+        {showSubstitutionNotice: identity[language].showSubstitutionNotice}));
       return wrapper;
     }
     if (identity?.[language]?.spans) {
@@ -2590,10 +2593,25 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    if (identity?.[language]?.note) {
+    let noteText = identity?.[language]?.note;
+    if (language === "Latin" && nieseBookKey(state.bookNum) === 7
+      && wanted >= 68 && wanted <= 99) {
+      const gap = wrapper.querySelector('tei-gap[reason="omitted"]');
+      if (wanted === 68 || gap) {
+        noteText = "Bamberg’s lacuna begins partway through VII.68 and continues through VII.99. "
+          + "Lukas (2022, pp. lxvi–lxvii) identifies this gap in the early Gamma subgroup γ.1.1.";
+        // Replace the older labels in the display copy, keeping the paragraph IDs for annotations.
+        const placeholder = gap?.previousSibling;
+        if (placeholder?.nodeType === Node.TEXT_NODE && placeholder.textContent.trim() === "Omitted in Bamberg MS") {
+          placeholder.remove();
+        }
+        gap?.remove();
+      }
+    }
+    if (noteText) {
       const note = document.createElement("p");
       note.className = "alert alert-secondary niese-correspondence-note";
-      note.setAttribute("role", "note"); note.textContent = identity[language].note;
+      note.setAttribute("role", "note"); note.textContent = noteText;
       wrapper.insertBefore(note, wrapper.firstChild);
     }
     return wrapper;
