@@ -251,6 +251,7 @@
     <link rel="stylesheet" href="/assets/css/tei.css?v=20261109-bellum-reading-levels">
     <link rel="stylesheet" href="/assets/css/bellum-facsimiles.css?v=20261127-witness-catalogue">
     <link rel="stylesheet" href="/assets/css/froben.css?v=20261126-froben-bellum">
+    <link rel="stylesheet" href="/assets/css/deh-parallels.css?v=20261127-inline-deh-parallels">
     
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
@@ -438,7 +439,10 @@
         </button>
       </div>
     <div class="bellum-reader-panes">
-    <div id="pane-container">
+    <div id="pane-container"
+         data-work="BJ"
+         data-alignment-url="/assets/data/deh-josephus-concordance.json"
+         data-deh-url="/deh/">
       <div id="latin" class="pane">
         <h3>Latin</h3>
       </div>
@@ -530,11 +534,12 @@
 <script src="/assets/js/CETEI.js"></script>
 
 <script type="module" src="/assets/js/frobenBellumReader.js?v=20261126-froben-bellum"></script>
+<script type="module" src="/assets/js/josephusParallels.js?v=20261127-inline-deh-parallels"></script>
 <script src="/assets/js/annotationEditorialEnglish.js?v=1793494133"></script>
 <script src="/assets/js/annotationEditorialUpdates.js?v=1793494133"></script>
 <script src="/assets/js/manuscriptAnnotations.js?v=1793494133"></script>
 <script src="/assets/js/bellumFacsimiles.js?v=20261127-bamberg79-crops"></script>
-<script src="/assets/js/renderTei.js?v=20261126-froben-bellum"></script>
+<script src="/assets/js/renderTei.js?v=20261127-inline-deh-parallels"></script>
 
 
 

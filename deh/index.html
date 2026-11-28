@@ -250,7 +250,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/assets/css/tei.css?v=20261122-ussani-compact">
     
-    <link rel="stylesheet" href="/assets/css/deh-parallels.css?v=1793494133">
+    <link rel="stylesheet" href="/assets/css/deh-parallels.css?v=20261127-inline-deh-parallels">
     <link rel="stylesheet" href="/assets/css/millet.css?v=20261117-modernised">
     <link rel="stylesheet" href="/assets/css/lauro.css">
     <link rel="stylesheet" href="/assets/css/deh-commentary.css">
@@ -463,7 +463,10 @@
     <section id="deh-parallels" hidden aria-labelledby="parallel-title" data-alignment-url="/assets/data/deh-josephus-concordance.json" data-xml-base="/assets/xml/" data-aj-alignment-url="/assets/data/deh-aj-display.v1.json" data-aj-alignment-sha="5e491b8f871737d74f36626d7ef8416c7b1a8383f5e8083b6857b91c49e58da2" data-antiquities-url="/antiquities/" data-bellum-url="/bellum-judaicum/">
   <div class="parallel-toolbar">
     <h2 id="parallel-title">DEH ↔ Josephus parallels</h2>
-    <a id="parallel-close">Return to DEH reading</a>
+    <div class="parallel-reading-links">
+      <a id="parallel-close">Return to DEH reading</a>
+      <a id="parallel-return-josephus" hidden></a>
+    </div>
   </div>
   <nav class="parallel-navigation" aria-label="DEH passages with Josephus parallels">
     <label for="parallel-book">Book <select id="parallel-book"></select></label>
@@ -598,7 +601,7 @@
 <!-- CETEIcean and TEI display JS -->
 <script src="/assets/js/CETEI.js"></script>
 
-<script type="module" src="/assets/js/dehParallels.js?v=20261108-pollard-v1.2"></script>
+<script type="module" src="/assets/js/dehParallels.js?v=20261127-reciprocal-parallels"></script>
 <script type="module" src="/assets/js/milletReader.js?v=20261117-millet-aligned"></script>
 <script type="module" src="/assets/js/lauroReader.js"></script>
 <script type="module" src="/assets/js/dehCommentary.js"></script>
